@@ -2,23 +2,21 @@
 Simple cddos utility<br>
 <b>Usage:</b><br>
 <p>
-```
-./ddos <HOST> <PORT> [options...]
-HOST -- host to ddos
-PORT -- port to connect,if set to 0 will try random ports
-```
+
+./ddos <HOST> <PORT> [options...]<br>
+HOST -- host to ddos<br>
+PORT -- port to connect,if set to 0 will try random ports<br>
+
 </p>
 <b>Options:</b><br>
 <p>
-```
--r -- generate random packet
--u -- Use UDP
--p -- Use TCP
--t <THREAD COUNT> -- describes thread count
--s <PACKET SIZE> -- set packet size
---http -- Make http request
---no-warnings -- ignore all warnings
---no-wait -- Do not wait server to respond
---no-check -- Do not check server before starting ddos
-```
+-r -- generate random packet<br>
+-u -- Use UDP<br>
+-p -- Use TCP<br>
+-t <THREAD COUNT> -- describes thread count<br>
+-s <PACKET SIZE> -- set packet size<br>
+--http -- Make http request<br>
+--no-warnings -- ignore all warnings<br>
+--no-wait -- Do not wait server to respond<br>
+--no-check -- Do not check server before starting ddos<br>
 </p>
