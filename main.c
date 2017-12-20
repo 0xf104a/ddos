@@ -18,9 +18,9 @@ bool socket_wait;
 int main(int argc, const char* argv[])
 {
     socket_wait=true;
-    hide_warnings=false;//Ужасный код написанный ниже всего лишь навсего парсит аргументы консоли...
+    hide_warnings=false;
     srand(time(NULL));
-    info("DDOSer v1.0 especially licensed for S1aVa");
+    info("DDOSer v1.0-alpha");
 #ifdef DEBUG
     info("Starting in DEBUG mode");
 #endif
