@@ -31,11 +31,10 @@ int hostname2ip(char* hostname, char* ip)
 
     return 1;
 }
-int dos_tcp_sock(char* _host, int port)
+int dos_tcp_sock(char* host, int port)
 {
     int sock;
-    char* host = (char*)malloc(sizeof(char) * 14);
-    hostname2ip(_host, host);
+    
     struct sockaddr_in addr;
     sock = socket(AF_INET, SOCK_STREAM, 0);
 #ifdef DEBUG
@@ -95,11 +94,9 @@ int dos_udp_sock()
 #endif
     return sock;
 }
-char* dos_udp_send(int sock, char* _host, int port, char* message)
+char* dos_udp_send(int sock, char* host, int port, char* message)
 {
     struct sockaddr_in addr;
-    char* host = (char*)malloc(sizeof(char) * 14);
-    hostname2ip(_host, host);
     char* buf = (char*)malloc(1024 * sizeof(char));
     addr.sin_family = AF_INET;
     addr.sin_port = htons(port);

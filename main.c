@@ -20,7 +20,7 @@ int main(int argc, const char* argv[])
     socket_wait=true;
     hide_warnings=false;
     srand(time(NULL));
-    info("DDOSer v1.0-alpha");
+    info("DDOSer v1.0");
 #ifdef DEBUG
     info("Starting in DEBUG mode");
 #endif
@@ -28,8 +28,9 @@ int main(int argc, const char* argv[])
         info("Usage:%s -[h] <HOST> <PORT> --[r[d OR p]] -t <THREAD COUNT> -s <PACKET SIZE> [--http --no-warnings --no-check --no-wait]", argv[0]);
         return 0;
     }
-    char* host = argv[1];
-    
+    char* _host = argv[1];
+    char* host=(char*)malloc(sizeof(char)*14);
+    hostname2ip(_host, host);
     info("Starting up");
     int port = atoi(argv[2]);
     if (port < 0) {
