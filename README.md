@@ -1,6 +1,6 @@
 # cddos
 <b>Compilation</b><br>
-```$ gcc main.c ddos.c socket.c message.c util.c ```
+```$ gcc main.c ddos.c socket.c message.c util.c -o ddos ```
 <br>
 Simple cddos utility<br>
 <b>Usage:</b><br>
