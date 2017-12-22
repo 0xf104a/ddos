@@ -1,4 +1,5 @@
 # cddos
+<b>THIS PROGRAM PROVIDED FOR ONLY EDUCATIONAL PURPOSES</b><br>
 <b>Compilation</b><br>
 ```$ gcc main.c ddos.c socket.c message.c util.c -o ddos ```
 <br>
@@ -22,4 +23,7 @@ PORT -- port to connect,if set to 0 will try random ports<br>
 --no-warnings -- ignore all warnings<br>
 --no-wait -- Do not wait server to respond<br>
 --no-check -- Do not check server before starting ddos<br>
-</p>
+</p><br>
+  <b>Example usage:</b><br>
+  ```$ ./ddos some.boring.long.domain.net 80 --t 70 --no-wait --http```
+  This will send packets  some.boring.long.domain.net:80 without waiting for response usin http syntax
