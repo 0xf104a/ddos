@@ -20,8 +20,8 @@ void error(const char* format, ...)
 }
 void warning(const char* format, ...)
 {
-    if(!hide_warnings){
-       PRINT_FORMATTED(WARN)
+    if (!hide_warnings) {
+        PRINT_FORMATTED(WARN)
     }
 }
 void success(const char* format, ...)

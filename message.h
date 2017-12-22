@@ -10,8 +10,8 @@
 #define message_h
 
 #include <stdarg.h>
-#include <stdio.h>
 #include <stdbool.h>
+#include <stdio.h>
 
 #define HEADER "\033[95m"
 #define OKBLUE "\033[94m"

