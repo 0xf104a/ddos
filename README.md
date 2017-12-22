@@ -33,3 +33,4 @@ PORT -- port to connect,if set to 0 will try random ports<br>
 ``` $./ddos example.com 88 --no-check --no-wait -u ```
   <br>
   With this options program will send  packets to example.com:88 without pre-start host check and without waiting for response.Program will use 5 threads. Program will use UDP protocol.
+  <b>Notice:</b>Still tested only on Mac Os X
