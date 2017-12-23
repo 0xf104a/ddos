@@ -25,7 +25,7 @@ int main(int argc, const char* argv[])
     info("Starting in DEBUG mode");
 #endif
     if (argc < 3 || !strcmp(argv[1], "-h")) {
-        info("Usage:%s -[h] <HOST> <PORT> --[r[d OR p]] -t <THREAD COUNT> -s <PACKET SIZE> [--http --no-warnings --no-check --no-wait]", argv[0]);
+        info("Usage:%s -[h] <HOST> <PORT> -[r[d OR p]] -t <THREAD COUNT> -s <PACKET SIZE> [--http --no-warnings --no-check --no-wait]", argv[0]);
         return 0;
     }
     char* _host = argv[1];
@@ -38,7 +38,6 @@ int main(int argc, const char* argv[])
 #endif
         return -1;
     }
-    info("Starting up");
     int port = atoi(argv[2]);
     if (port < 0) {
         error("Bad port supplied!");
@@ -108,8 +107,7 @@ int main(int argc, const char* argv[])
     }
 #ifdef DEBUG
     info("Launching DDOSer");
-    info("HIDE_WARNINGS=%d", hide_warnings);
-    warning("some warning");
+    info("HIDE_WARNINGS=%d", hide_warnings); 
     info("Config:");
     info("RANDOM_PACKET=%d", RANDOM_PACKET);
     info("THREAD_COUNT=%d", THREAD_COUNT);
