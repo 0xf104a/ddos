@@ -8,7 +8,7 @@
 
 #include "ddos.h"
 
-int pc;
+int64_t pc;
 char* __host;
 int __port;
 int tcount = 0;
@@ -22,7 +22,7 @@ void __exit()
     pthread_mutex_lock(&mutex);
     fflush(stdout);
     printf("%c[2K", 27);
-    printf("\n");
+    success("Total packets sent:%d",pc);
     info("Quitting...");
     pthread_mutex_unlock(&mutex);
     exit(0);
