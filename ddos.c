@@ -22,6 +22,7 @@ void __exit()
     pthread_mutex_lock(&mutex);
     fflush(stdout);
     printf("%c[2K", 27);
+    printf("\r");
     success("Total packets sent:%d",pc);
     info("Quitting...");
     pthread_mutex_unlock(&mutex);
