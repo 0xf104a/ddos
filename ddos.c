@@ -23,7 +23,7 @@ void __exit()
     fflush(stdout);
     printf("%c[2K", 27);
     printf("\r");
-    success("Total packets sent:%d",pc);
+    success("Total packets sent:%lld",pc);
     info("Quitting...");
     pthread_mutex_unlock(&mutex);
     exit(0);
@@ -108,7 +108,7 @@ void _ddos_stat()
         if (!__run) {
             break;
         }
-        success_n("DDOSing %s:%d;Packets sent:%d,thread count:%d\r", __host, __port, pc, tcount);
+        success_n("DDOSing %s:%d;Packets sent:%lld,thread count:%d\r", __host, __port, pc, tcount);
     }
 }
 _dos_param* _init_dos_p(char* host, int port, char* packet, uint8_t mode)
