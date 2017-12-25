@@ -18,8 +18,8 @@ PORT -- port to connect,if set to 0 will try random ports<br>
 -r -- generate random packet<br>
 -u -- Use UDP<br>
 -p -- Use TCP<br>
--t <THREAD COUNT> -- describes thread count,by default set to 5<br>
--s <PACKET SIZE> -- set packet size<br>
+-t (THREAD COUNT) -- describes thread count,by default set to 5<br>
+-s (PACKET SIZE) -- set packet size<br>
 --http -- Make http request<br>
 --no-warnings -- ignore all warnings<br>
 --no-wait -- Do not wait server to respond<br>
