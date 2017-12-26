@@ -23,6 +23,7 @@ PORT -- port to connect,if set to 0 will try random ports<br>
 --no-warnings -- ignore all warnings<br>
 --no-wait -- Do not wait server to respond<br>
 --no-check -- Do not check server before starting ddos<br>
+--packetfile (FILENAME) -- load packet conents from file(Could be overrided with --http option)
 </p><br>
   
 <b>Example usage:</b><br>
