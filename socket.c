@@ -148,7 +148,7 @@ bool dos_udp_send(int sock, char* host, int port, char* message, char* buf, size
         return false;
     }
     size_t slen = sizeof(addr);
-    if (recvfrom(sock, buf, bufsize, MSG_PEEK, (struct sockaddr*)&addr, &slen) == -1) {
+    if (socket_wait&&recvfrom(sock, buf, bufsize, MSG_PEEK, (struct sockaddr*)&addr, &slen) == -1) {
         warning("UDP recvfrom %s failed.", host);
         return false;
     }
