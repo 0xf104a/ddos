@@ -99,7 +99,7 @@ int main(int argc, const char* argv[])
         info("Checking service");
         int sc = dos_tcp_sock(host, port);
         if (sc < 0) {
-            error("Could not connect.Exiting");
+            error("Exiting.");
             return -1;
         }
         success("Service online");
