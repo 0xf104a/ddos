@@ -7,6 +7,7 @@
 //
 
 #include "util.h"
+#include "message.h"
 #include <stdio.h>
 int randport()
 {
@@ -38,8 +39,10 @@ const char* getarg(const char arg[2], const char* argv[], int argc)
 #endif
         if (!strcmp(arg, argv[i])) {
 
-            if (i < argc) {
+            if (i < argc-1) {
                 return argv[i + 1];
+            }else{
+                die("Argument required for key:%s",arg);
             }
         }
     }
@@ -54,8 +57,10 @@ const char* getlarg(const char* arg, const char* argv[], int argc)
 #endif
         if (!strcmp(arg, argv[i])) {
 
-            if (i < argc) {
+            if (i < argc-1) {
                 return argv[i + 1];
+            }else{
+                die("Argument required for key:%s",arg);
             }
         }
     }
