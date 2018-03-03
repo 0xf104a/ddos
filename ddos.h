@@ -27,7 +27,7 @@ extern int tcount;
 extern char* __host;
 extern int __port;
 extern pthread_mutex_t mutex;
-extern bool _dos_sleep;
+extern bool use_dos_sleep;
 extern int dos_sleep;
 
 typedef struct {

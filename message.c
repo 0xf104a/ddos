@@ -10,13 +10,16 @@
 #include "ddos.h"
 
 bool hide_warnings;
+bool hide_errors;
 void info(const char* format, ...)
 {
     PRINT_FORMATTED(INFO)
 }
 void error(const char* format, ...)
 {
-    PRINT_FORMATTED(ERROR)
+    if(!hide_errors){
+        PRINT_FORMATTED(ERROR)
+    }
 }
 void warning(const char* format, ...)
 {

@@ -8,7 +8,7 @@
 
 #include "socket.h"
 
-int hostname2ip(char* hostname, char* ip)
+int hostname2ip(const char* hostname, char* ip)
 {
     struct hostent* he;
     struct in_addr** addr_list;

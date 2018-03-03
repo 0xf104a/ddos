@@ -42,10 +42,12 @@
     va_end(args);
 
 extern bool hide_warnings;
+extern bool hide_errors;
 
 void info(const char* format, ...);
 void warning(const char* format, ...);
 void error(const char* format, ...);
 void success(const char* format, ...);
 void success_n(const char* format, ...);
+void die(const char* format, ...);
 #endif /* message_h */

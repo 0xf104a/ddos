@@ -10,6 +10,8 @@
 #error Not compitable with Windows paltform
 #endif
 
+#define DEBUG
+
 #include <stdbool.h>
 #include <time.h>
 
@@ -18,23 +20,22 @@
 #include "socket.h"
 
 bool socket_wait;
-bool _dos_sleep;
-int dos_sleep;
+
 
 int main(int argc, const char* argv[])
 {
     socket_wait = true;
     hide_warnings = false;
     srand(time(NULL));
-    info("DDOSer v1.0 by Andrewerr(http://github.com/Andrewerr)");
+    info("DDOSer v1.1a by Andrewerr(http://github.com/Andrewerr)");
 #ifdef DEBUG
     info("Starting in DEBUG mode");
 #endif
     if (argc < 3 || !strcmp(argv[1], "-h")) {
-        info("Usage:%s -[h] <HOST> <PORT> -[r[d OR p]] -t <THREAD COUNT> -s <PACKET SIZE> [--http --no-warnings --no-check --no-wait]", argv[0]);
+        info("Usage:%s -[h] <HOST> <PORT> -[r] -t <THREAD COUNT> -s <PACKET SIZE> [--http --no-warnings --no-check --no-wait]", argv[0]);
         return 0;
     }
-    char* _host = argv[1];
+    const char* _host = argv[1];
     char* host = (char*)malloc(sizeof(char) * 14);
     info("Starting up");
     if (hostname2ip(_host, host)) {
@@ -44,8 +45,8 @@ int main(int argc, const char* argv[])
 #endif
         return -1;
     }
-    _dos_sleep=checklarg("--sleep",argv,argc);
-    if(_dos_sleep){
+    use_dos_sleep=checklarg("--sleep",argv,argc);
+    if(use_dos_sleep){
         const char* RAW_SLEEP=getlarg("--sleep",argv,argc);
         dos_sleep=atoi(RAW_SLEEP);
     }
@@ -58,6 +59,7 @@ int main(int argc, const char* argv[])
         return -1;
     }
     hide_warnings = checklarg("--no-warnings", argv, argc);
+    hide_errors = checklarg("--no-errors", argv, argc);
     bool RANDOM_PACKET = checkarg("-r", argv, argc);
     int THREAD_COUNT = 5;
     int PACKET_SIZE = 4096;
@@ -122,7 +124,8 @@ int main(int argc, const char* argv[])
     }
 #ifdef DEBUG
     info("Launching DDOSer");
-    info("HIDE_WARNINGS=%d", hide_warnings); 
+    info("HIDE_WARNINGS=%d", hide_warnings);
+    info("HIDE ERRORS=%d",hide_errors);
     info("Config:");
     info("RANDOM_PACKET=%d", RANDOM_PACKET);
     info("THREAD_COUNT=%d", THREAD_COUNT);

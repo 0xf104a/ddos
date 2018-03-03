@@ -1,2 +1,2 @@
 rm -f ddos
-gcc main.c ddos.c util.c message.c socket.c -lpthread -o ddos
+gcc ddos.c util.c message.c socket.c main.c -lpthread -o ddos
