@@ -30,10 +30,14 @@
 #define PRINT_FORMATTED(STYLE) \
     va_list args;              \
     va_start(args, format);    \
+    flockfile(stdout);         \
+    printf("\33[2K");          \
     printf(STYLE);             \
     vprintf(format, args);     \
     printf("\n");              \
+    funlockfile(stdout);       \
     va_end(args);
+
 #define PRINT_FORMATTED_NO_NEWLINE(STYLE) \
     va_list args;                         \
     va_start(args, format);               \
