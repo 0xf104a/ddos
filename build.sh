@@ -1,12 +1,16 @@
 #!/bin/bash
-echo "╔╦╗╔╦╗╔═╗╔═╗╔═╗╦═╗"
-echo " ║║ ║║║ ║╚═╗║╣ ╠╦╝"
-echo "═╩╝═╩╝╚═╝╚═╝╚═╝╩╚═ v1.1b builder"
-if [ $# -eq 0 ]
+if [ ! $# -eq 2 ]
+ then
+  echo "╔╦╗╔╦╗╔═╗╔═╗╔═╗╦═╗"
+  echo " ║║ ║║║ ║╚═╗║╣ ╠╦╝"
+  echo "═╩╝═╩╝╚═╝╚═╝╚═╝╩╚═ v1.1b builder"
+fi
+
+if [ $# -eq 0  -o  $1 = "-h" ]
   then
     echo -n "Usage:"
     echo -n $0
-    echo " [debug|release|clean|update]"
+    echo " [-h] [debug|release|clean|update] [-n]"
     exit -1
 fi
 
