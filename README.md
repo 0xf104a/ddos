@@ -1,5 +1,5 @@
 # ddos
-<b>cddos</b>--simple progrma to test ddos protection system</br>
+<b>ddos</b>--simple progrma to test ddos protection system</br>
 <b>THIS PROGRAM PROVIDED FOR ONLY EDUCATIONAL PURPOSES</b><br>
 ## Compilation
 ```$ ./build.sh release ```
