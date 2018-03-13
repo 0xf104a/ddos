@@ -45,7 +45,7 @@ if [ $1 = "debug" ]
 fi
 if [ $1 = "release" ]
   then
-   echo "Building relase"
+   echo "Building release"
    gcc util.c message.c socket.c ddos.c main.c -march=native -Ofast -Os -lpthread -o ddos
    exit
 fi
