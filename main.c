@@ -30,8 +30,8 @@ int main(int argc, const char* argv[])
     printf("██║  ██║██║  ██║██║   ██║╚════██║██╔══╝  ██╔══██╗\n");
     printf("██████╔╝██████╔╝╚██████╔╝███████║███████╗██║  ██║\n");
     printf("╚═════╝ ╚═════╝  ╚═════╝ ╚══════╝╚══════╝╚═╝  ╚═╝\n");
-    printf("                                             v1.1b\n");
-    info("DDOSer v1.1b by Andrewerr(https://github.com/Andrewerr)");
+    printf("                                             v1.1\n");
+    info("DDOSer v1.1 by Andrewerr(https://github.com/Andrewerr)");
 #ifdef DEBUG
     info("Starting in DEBUG mode");
 #endif
