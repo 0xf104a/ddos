@@ -1,7 +1,7 @@
-# cddos
-<b>cddos</b>--program for dosing websites written on plain c and using pthread library</br>
+# ddos
+<b>cddos</b>--simple progrma to test </br>
 <b>THIS PROGRAM PROVIDED FOR ONLY EDUCATIONAL PURPOSES</b><br>
-<b>Compilation:</b><br>
+## Compilation
 ```$ gcc main.c ddos.c socket.c message.c util.c -lpthread -o ddos ```
 <br>
 <b>Usage:</b><br>
