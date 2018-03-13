@@ -45,8 +45,8 @@ if [ $1 = "update" ]
  then
   echo "Updating..."
   git pull
-  ./$0 clean
-  ./$0 release
+  ./$0 clean -n
+  ./$0 release -n
   exit
 fi
 echo -n "Unknown option:"
