@@ -30,7 +30,7 @@ int main(int argc, const char* argv[])
     printf("██║  ██║██║  ██║██║   ██║╚════██║██╔══╝  ██╔══██╗\n");
     printf("██████╔╝██████╔╝╚██████╔╝███████║███████╗██║  ██║\n");
     printf("╚═════╝ ╚═════╝  ╚═════╝ ╚══════╝╚══════╝╚═╝  ╚═╝\n");
-    printf("                                             v1.1a\n");
+    printf("                                             v1.1b\n");
     info("DDOSer v1.1b by Andrewerr(https://github.com/Andrewerr)");
 #ifdef DEBUG
     info("Starting in DEBUG mode");
@@ -116,15 +116,31 @@ int main(int argc, const char* argv[])
     bool check = !checklarg("--no-check", argv, argc);
     socket_wait = !checklarg("--no-wait", argv, argc);
     
-    if (check) {
+    if (check&&PROTOCOL==MODE_TCP) {//TODO:For next verison make normal check
         info("Checking service");
         int sc = dos_tcp_sock(host, port);
         if (sc < 0) {
-            error("Exiting.");
+            error("Failed to establish connection.Exiting.");
             return -1;
         }
         success("Service online");
         shutdown(sc, 2);
+    }else if(check){
+        info("Checking service");
+        int sc = dos_udp_sock();
+        if (sc < 0) {
+            error("Failed to create socket.Exiting.");
+            return -1;
+        }
+        char buf[32];
+        bzero(buf, 32);
+        dos_udp_send(sc, host, port, "echo", buf, 32);
+        if(buf[0]!=0){
+            success("Service online");
+        }else{
+            die("Service offline");
+        }
+        
     }
 #ifdef DEBUG
     info("Launching DDOSer");
