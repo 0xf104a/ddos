@@ -7,7 +7,7 @@
 //
 
 #ifdef WIN32
-#error Not compitable with Windows paltform
+#error Not compitable with Windows platform
 #endif
 
 #include <stdbool.h>
