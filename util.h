@@ -24,5 +24,7 @@ bool checkarg(const char arg[2], const char* argv[], int argc);
 bool checklarg(const char* arg, const char* argv[], int argc);
 char* readfile(char* filename);
 const char* getlarg(const char* arg, const char* argv[], int argc);
-
+void sleep_ms(int milliseconds);
+char* dtoa(double x);
+char* bytes2mb(int64_t bcount);
 #endif /* util_h */

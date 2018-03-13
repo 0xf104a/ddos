@@ -19,6 +19,7 @@ bool __run;
 bool use_dos_sleep;
 int dos_sleep;
 
+int64_t plen;//packet length
 void __exit()
 {
     __run = false;
@@ -117,7 +118,7 @@ void _ddos_stat()
         if (!__run) {
             break;
         }
-        success_n("DDOSing %s:%d;Packets sent:%lld,thread count:%d\r", __host, __port, pc, tcount);
+        success_n("DDOSing %s:%d;Packets sent:%s,thread count:%d\r", __host, __port, bytes2mb(pc*plen), tcount);
     }
 }
 _dos_param* _init_dos_p(char* host, int port, char* packet, uint8_t mode)
@@ -143,6 +144,7 @@ void __ddos_wrapper(_dos_param* x)
 void ddos(char* host, int port, char* packet, int _tcount, int mode)
 {
     pc = 0;
+    plen=strlen(packet);
     __run = true;
     signal(SIGPIPE, SIG_IGN);
     signal(SIGINT, __exit);

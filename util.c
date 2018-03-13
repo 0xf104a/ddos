@@ -8,7 +8,9 @@
 
 #include "util.h"
 #include "message.h"
+
 #include <stdio.h>
+#include <math.h>
 int randport()
 {
     return rand() % 65534 + 1;
@@ -110,4 +112,12 @@ void sleep_ms(int milliseconds)
     ts.tv_sec = milliseconds / 1000;
     ts.tv_nsec = (milliseconds % 1000) * 1000000;
     nanosleep(&ts, NULL);
+}
+char* dtoa(double x){//double to char*
+    char *s=(char*)malloc(sizeof(x)+1);
+    sprintf(s,"%0.1f",x);
+    return s;
+}
+char* bytes2mb(int64_t bcount){
+    return strcat(dtoa(bcount/pow(1024.0,2)), "Mb");
 }

