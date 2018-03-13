@@ -1,7 +1,7 @@
 #!/bin/bash
 echo "╔╦╗╔╦╗╔═╗╔═╗╔═╗╦═╗"
 echo " ║║ ║║║ ║╚═╗║╣ ╠╦╝"
-echo "═╩╝═╩╝╚═╝╚═╝╚═╝╩╚═ v1.1a builder"
+echo "═╩╝═╩╝╚═╝╚═╝╚═╝╩╚═ v1.1b builder"
 if [ $# -eq 0 ]
   then
     echo -n "Usage:"

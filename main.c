@@ -10,8 +10,6 @@
 #error Not compitable with Windows paltform
 #endif
 
-#define DEBUG
-
 #include <stdbool.h>
 #include <time.h>
 
@@ -33,7 +31,7 @@ int main(int argc, const char* argv[])
     printf("██████╔╝██████╔╝╚██████╔╝███████║███████╗██║  ██║\n");
     printf("╚═════╝ ╚═════╝  ╚═════╝ ╚══════╝╚══════╝╚═╝  ╚═╝\n");
     printf("                                             v1.1a\n");
-    info("DDOSer v1.1a by Andrewerr(https://github.com/Andrewerr)");
+    info("DDOSer v1.1b by Andrewerr(https://github.com/Andrewerr)");
 #ifdef DEBUG
     info("Starting in DEBUG mode");
 #endif
