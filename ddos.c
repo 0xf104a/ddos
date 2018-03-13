@@ -9,6 +9,8 @@
 #include "ddos.h"
 #include "util.h"
 
+#include <math.h>
+
 int64_t pc;
 char* __host;
 int __port;
@@ -20,6 +22,8 @@ bool use_dos_sleep;
 int dos_sleep;
 
 int64_t plen;//packet length
+clock_t tm;//last time stat update
+int64_t pc_old;//packets count on last stat update
 void __exit()
 {
     __run = false;
@@ -27,7 +31,7 @@ void __exit()
     fflush(stdout);
     printf("%c[2K", 27);
     printf("\r");
-    success("Total packets sent:%lld",pc);
+    success("Total data sent:%s",bytes2mb(pc*plen));
     info("Quitting...");
     pthread_mutex_unlock(&mutex);
     exit(0);
@@ -110,15 +114,19 @@ void _ddos_udp(char* host, int port, char* packet)
     tcount--;
 }
 
-void _ddos_stat()
+void _ddos_stat()//update stat
 {
     success("Status:");
     success("Hit ^C to exit");
     for (;;) {
+        clock_t now=clock();
+        double delta_t=(double)(now - tm) / CLOCKS_PER_SEC;//time diff
+        double delta_p=pc-pc_old;//packets diff
+        double delta_mb=(delta_p*plen)/pow(1024.0,2);
         if (!__run) {
             break;
         }
-        success_n("DDOSing %s:%d;Packets sent:%s,thread count:%d\r", __host, __port, bytes2mb(pc*plen), tcount);
+        success_n("DDOSing %s:%d;Packets sent:%s,thread count:%d,%.2fMb/s\r", __host, __port, bytes2mb(pc*plen), tcount,delta_mb*(1/delta_t));
     }
 }
 _dos_param* _init_dos_p(char* host, int port, char* packet, uint8_t mode)

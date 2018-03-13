@@ -33,7 +33,7 @@ int main(int argc, const char* argv[])
     printf("██████╔╝██████╔╝╚██████╔╝███████║███████╗██║  ██║\n");
     printf("╚═════╝ ╚═════╝  ╚═════╝ ╚══════╝╚══════╝╚═╝  ╚═╝\n");
     printf("                                             v1.1a\n");
-    info("DDOSer v1.1a by Andrewerr(http://github.com/Andrewerr)");
+    info("DDOSer v1.1a by Andrewerr(https://github.com/Andrewerr)");
 #ifdef DEBUG
     info("Starting in DEBUG mode");
 #endif
