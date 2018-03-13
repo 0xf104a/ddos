@@ -1,17 +1,25 @@
 #!/bin/bash
-if [ ! $# -le 2 ]
+if [ ! $# -eq 2 ]
  then
   echo "╔╦╗╔╦╗╔═╗╔═╗╔═╗╦═╗"
   echo " ║║ ║║║ ║╚═╗║╣ ╠╦╝"
   echo "═╩╝═╩╝╚═╝╚═╝╚═╝╩╚═ v1.1 builder"
 fi
 
-if [ $# -eq 0  -o  $1 = "-h" ]
+if [ $# -eq 0 ]
   then
     echo -n "Usage:"
     echo -n $0
     echo " [-h] [debug|release|clean|update] [-n]"
     exit -1
+fi
+
+if [ $1 == "-h" ]
+ then
+  echo -n "Usage:"
+  echo -n $0
+  echo " [-h] [debug|release|clean|update] [-n]"
+  exit -1
 fi
 
 if [ $1 = "clean" ]
