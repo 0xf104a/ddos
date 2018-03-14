@@ -5,7 +5,7 @@
 ```$ ./build.sh release ```
 <br>
 ## Usage
-```$./ddos (HOST) (PORT) [options...]<br> ```
+```$./ddos (HOST) (PORT) [options...] ``` <br>
 HOST -- host to ddos<br>
 PORT -- port to connect,if set to 0 will try random ports<br>
 <b>Options:</b><br>
