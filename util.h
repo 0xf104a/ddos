@@ -33,5 +33,7 @@ const char* getlarg(const char* arg, const char* argv[], int argc);
 void sleep_ms(int milliseconds);
 char* dtoa(double x);
 char* bytes2mb(int64_t bcount);
-double bytes2any(int64_t bcount,uint8_t type);
+char* bytes2any(int64_t bcount,uint8_t type);
+char* metrics2str(uint8_t type);
+uint8_t str2metrics(char* metrics);
 #endif /* util_h */

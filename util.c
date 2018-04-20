@@ -121,10 +121,34 @@ char* dtoa(double x){//double to char*
 char* bytes2mb(int64_t bcount){
     return strcat(dtoa(bcount/pow(1024.0,2)), "Mb");
 }
-double bytes2any(int64_t bcount,uint8_t type){
-    if(type==0){
-        return (double)bcount;
+char* bytes2any(int64_t bcount,uint8_t type){
+    return dtoa(bcount/pow(1024.0,2));
+}
+char* metrics2str(uint8_t type){
+    if(type==SIZE_BYTES){
+        return "B";
+    }else if(type==SIZE_KB){
+        return "Kb";
+    }else if(type==SIZE_MB){
+        return "Mb";
+    }else if(type==SIZE_GB){
+        return "Gb";
     }else{
-        return bcount/pow(1024.0,type);
+        return "Tb";
+    }
+}
+uint8_t str2metrics(char* metrics){
+    if(strcmp(metrics, "b")==0){
+        return SIZE_BYTES;
+    }else if(strcmp(metrics, "Kb")==0){
+        return SIZE_KB;
+    }else if(strcmp(metrics, "Mb")==0){
+        return SIZE_MB;
+    }else if(strcmp(metrics, "Gb")==0){
+        return SIZE_GB;
+    }else if(strcmp(metrics, "Tb")==0){
+        return SIZE_TB;
+    }else{
+        return -1;
     }
 }

@@ -22,7 +22,7 @@
 #define MODE_TCP 1
 #define MODE_UDP 2
 
-extern int64_t pc;
+extern double psent;
 extern uint8_t metrics;
 extern bool status;//is status shown?
 extern int tcount;

