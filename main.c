@@ -10,8 +10,12 @@
 #error Not compitable with Windows platform
 #endif
 
+#define DEBUG
+
 #include <stdbool.h>
 #include <time.h>
+
+
 
 #include "ddos.h"
 #include "message.h"
@@ -24,7 +28,7 @@ int main(int argc, const char* argv[])
     socket_wait = true;
     hide_warnings = false;
     srand(time(NULL));
-    printf("█████╗  ██████╗ ╔██████╗ ███████╗███████╗██████╗\n");
+    printf("█████╗  █████╗  ╔██████╗ ███████╗███████╗██████╗\n");
     printf("██╔══██╗██╔══██╗██╔═══██╗██╔════╝██╔════╝██╔══██╗\n");
     printf("██║  ██║██║  ██║██║   ██║███████╗█████╗  ██████╔╝\n");
     printf("██║  ██║██║  ██║██║   ██║╚════██║██╔══╝  ██╔══██╗\n");
@@ -50,6 +54,7 @@ int main(int argc, const char* argv[])
         return -1;
     }
     use_dos_sleep=checklarg("--sleep",argv,argc);
+    status=!checklarg("--no-status", argv, argc);
     if(use_dos_sleep){
         const char* RAW_SLEEP=getlarg("--sleep",argv,argc);
         dos_sleep=atoi(RAW_SLEEP);
@@ -143,16 +148,15 @@ int main(int argc, const char* argv[])
         
     }
 #ifdef DEBUG
-    info("Launching DDOSer");
+    info("Congiguration:");
     info("HIDE_WARNINGS=%d", hide_warnings);
     info("HIDE ERRORS=%d",hide_errors);
-    info("Config:");
     info("RANDOM_PACKET=%d", RANDOM_PACKET);
     info("THREAD_COUNT=%d", THREAD_COUNT);
     info("PACKET_SIZE=%d", PACKET_SIZE);
     info("MODE=%d", PROTOCOL);
     info("USE_HTTP=%d", USE_HTTP);
-    info("PACKET=%s", packet);
+    info("STATUS=%d",status);
 #endif
 
     ddos(host, port, packet, THREAD_COUNT, PROTOCOL);

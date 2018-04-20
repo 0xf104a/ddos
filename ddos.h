@@ -23,6 +23,8 @@
 #define MODE_UDP 2
 
 extern int64_t pc;
+extern uint8_t metrics;
+extern bool status;//is status shown?
 extern int tcount;
 extern char* __host;
 extern int __port;

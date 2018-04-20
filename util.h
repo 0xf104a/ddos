@@ -15,6 +15,12 @@
 #include <string.h>
 #include <time.h>
 
+#define SIZE_BYTES 0
+#define SIZE_KB 1
+#define SIZE_MB 2
+#define SIZE_GB 3
+#define SIZE_TB 4
+
 int randport(void);
 char randchar(void);
 char* randstring(int sz);
@@ -27,4 +33,5 @@ const char* getlarg(const char* arg, const char* argv[], int argc);
 void sleep_ms(int milliseconds);
 char* dtoa(double x);
 char* bytes2mb(int64_t bcount);
+double bytes2any(int64_t bcount,uint8_t type);
 #endif /* util_h */

@@ -121,3 +121,10 @@ char* dtoa(double x){//double to char*
 char* bytes2mb(int64_t bcount){
     return strcat(dtoa(bcount/pow(1024.0,2)), "Mb");
 }
+double bytes2any(int64_t bcount,uint8_t type){
+    if(type==0){
+        return (double)bcount;
+    }else{
+        return bcount/pow(1024.0,type);
+    }
+}

