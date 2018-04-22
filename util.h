@@ -23,7 +23,7 @@
 
 int randport(void);
 char randchar(void);
-char* randstring(int sz);
+char* randstring(size_t sz);
 int randrange(int start, int end);
 const char* getarg(const char arg[2], const char* argv[], int argc);
 bool checkarg(const char arg[2], const char* argv[], int argc);

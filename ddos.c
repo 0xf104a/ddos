@@ -26,16 +26,16 @@ bool status;
 uint8_t metrics;
 double psize;//one packet size in selected metrics
 
-bool __run;
+bool __run;//still running?
 uint64_t pc;//Now it used for speed counting
 bool use_dos_sleep;
 int dos_sleep;
 
 int64_t plen;//packet length in bytes
-clock_t tm;//last time stat update
+clock_t tm;//last time stat updated
 int64_t pc_old;//packets count on last stat update
-char *smetrics;
-double psent_old;
+char *smetrics;//string of metrics type
+double psent_old;//old packet sendings(when ddos_stat() was called lsat time)
 
 void __exit()
 {
@@ -49,6 +49,7 @@ void __exit()
     pthread_mutex_unlock(&mutex);
     exit(0);
 }
+
 void __perror(){//for debugging
     __run = false;
     pthread_mutex_lock(&mutex);
@@ -61,6 +62,7 @@ void __perror(){//for debugging
 void _ddos_tcp(char* host, int port, char* packet)
 {
     tcount++;
+    
     bool RAND_PACKET = (packet == NULL);
     if (port == 0) {
         port = randport();
@@ -157,6 +159,7 @@ void _ddos_stat()//update stat
         pc=0;
     }
 }
+
 _dos_param* _init_dos_p(char* host, int port, char* packet, uint8_t mode)
 {
     _dos_param* p = malloc(sizeof(_dos_param) + (strlen(host) + strlen(packet)) * sizeof(char));
@@ -166,6 +169,7 @@ _dos_param* _init_dos_p(char* host, int port, char* packet, uint8_t mode)
     p->mode = mode;
     return p;
 }
+
 void __ddos_wrapper(_dos_param* x)
 {
     if (x->mode == MODE_TCP) {
@@ -177,6 +181,7 @@ void __ddos_wrapper(_dos_param* x)
         assert(false);
     }
 }
+
 void ddos(char* host, int port, char* packet, int _tcount, int mode)
 {
     signal(SIGPIPE, SIG_IGN);

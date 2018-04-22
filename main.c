@@ -26,19 +26,21 @@ int main(int argc, const char* argv[])
     socket_wait = true;
     hide_warnings = false;
     srand(time(NULL));
-    printf("█████╗  █████╗  ╔██████╗ ███████╗███████╗██████╗\n");
-    printf("██╔══██╗██╔══██╗██╔═══██╗██╔════╝██╔════╝██╔══██╗\n");
-    printf("██║  ██║██║  ██║██║   ██║███████╗█████╗  ██████╔╝\n");
-    printf("██║  ██║██║  ██║██║   ██║╚════██║██╔══╝  ██╔══██╗\n");
-    printf("██████╔╝██████╔╝╚██████╔╝███████║███████╗██║  ██║\n");
-    printf("╚═════╝ ╚═════╝  ╚═════╝ ╚══════╝╚══════╝╚═╝  ╚═╝\n");
-    printf("                                             v1.2-early-prealpha\n");
+    if(!checklarg("--hide-logo", argv, argc)){
+        printf("█████╗  █████╗  ╔██████╗ ███████╗███████╗██████╗\n");
+        printf("██╔══██╗██╔══██╗██╔═══██╗██╔════╝██╔════╝██╔══██╗\n");
+        printf("██║  ██║██║  ██║██║   ██║███████╗█████╗  ██████╔╝\n");
+        printf("██║  ██║██║  ██║██║   ██║╚════██║██╔══╝  ██╔══██╗\n");
+        printf("██████╔╝██████╔╝╚██████╔╝███████║███████╗██║  ██║\n");
+        printf("╚═════╝ ╚═════╝  ╚═════╝ ╚══════╝╚══════╝╚═╝  ╚═╝\n");
+        printf("                                             v1.2-early-prealpha\n");
+    }
     info("DDOSer v1.2 by Andrewerr(https://github.com/Andrewerr)");
 #ifdef DEBUG
     info("Starting in DEBUG mode");
 #endif
     if (argc < 3 || !strcmp(argv[1], "-h")) {
-        info("Usage:%s -[h] <HOST> <PORT> -[r] -t <THREAD COUNT> -s <PACKET SIZE> [--http --no-warnings --no-check --no-wait --no-status]", argv[0]);
+        info("Usage:%s -[h] <HOST> <PORT> -[r] -t <THREAD COUNT> -s <PACKET SIZE> [--http --no-warnings --no-check --no-wait --no-status --packetfile <FILENAME>]", argv[0]);
         return 0;
     }
     const char* _host = argv[1];
@@ -69,7 +71,7 @@ int main(int argc, const char* argv[])
     hide_errors = checklarg("--no-errors", argv, argc);
     bool RANDOM_PACKET = checkarg("-r", argv, argc);
     int THREAD_COUNT = 5;
-    int PACKET_SIZE = 4096;
+    size_t PACKET_SIZE = 4096;
     bool USE_HTTP = checklarg("--http", argv, argc);
     if (checkarg("-s", argv, argc)) {
         const char* raw_packetsize = getarg("-s", argv, argc);
@@ -121,7 +123,7 @@ int main(int argc, const char* argv[])
         info("Metrics_raw=%s",getlarg("--metrics", argv, argc));
 #endif
         metrics=str2metrics(getlarg("--metrics", argv, argc));
-        if(metrics<0){
+        if(metrics==255){
             die("Bad metrics argument");
         }
     }

@@ -19,7 +19,7 @@ char randchar()
 {
     return rand() % 126 + 1;
 }
-char* randstring(int sz)
+char* randstring(size_t sz)
 {
     char* s = (char*)malloc(sz * sizeof(char));
     for (int i = 0; i < sz; i++) {

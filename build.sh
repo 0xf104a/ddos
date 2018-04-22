@@ -3,7 +3,7 @@ if [ ! $# -eq 2 ] #FIXME:normal way of chceking whether -n argument used
  then
   echo "╔╦╗╔╦╗╔═╗╔═╗╔═╗╦═╗"
   echo " ║║ ║║║ ║╚═╗║╣ ╠╦╝"
-  echo "═╩╝═╩╝╚═╝╚═╝╚═╝╩╚═ v1.1 builder"
+  echo "═╩╝═╩╝╚═╝╚═╝╚═╝╩╚═ v1.2 builder"
 fi
 
 if [ $# -eq 0 ]

@@ -47,7 +47,7 @@ int dos_tcp_sock(char* host, int port)
     addr.sin_port = htons(port);
     addr.sin_addr.s_addr = inet_addr(host);
     if (connect(sock, (struct sockaddr*)&addr, sizeof(addr)) < 0) {
-        error("Could not connect to server.");
+        error("Could not connect to target.");
         shutdown(sock,2);
         return -2;
     }
