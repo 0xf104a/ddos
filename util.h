@@ -38,5 +38,6 @@ char* metrics2str(uint8_t type);
 uint8_t str2metrics(char* metrics);
 const char* sgetlarg(const char *arg, const char* argv[], int argc,const char* _default);
 const char* sgetarg(const char arg[2], const char* argv[], int argc,const char* _default);
+bool is_root(void);
 
 #endif /* util_h */

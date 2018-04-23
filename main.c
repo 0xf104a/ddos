@@ -133,10 +133,14 @@ int main(int argc, const char* argv[])
     socket_wait = !checklarg("--no-wait", argv, argc);
     //Checking whether host online
     if (check) {
-        int PING_MAX_TRIES=atoi(sgetlarg("--ping-max-tries", argv, argc, "5"));
-        int PING_TIMEOUT=atoi(sgetlarg("--ping-timeout", argv, argc, "2"));
-        if(!ping(host,PING_MAX_TRIES,PING_TIMEOUT)){
-            die("Host is down.If it just blocking ping packets try running with --no-check option");
+        if(is_root()){
+            int PING_MAX_TRIES=atoi(sgetlarg("--ping-max-tries", argv, argc, "5"));
+            int PING_TIMEOUT=atoi(sgetlarg("--ping-timeout", argv, argc, "2"));
+            if(!ping(host,PING_MAX_TRIES,PING_TIMEOUT)){
+                die("Host is down.If it just blocking ping packets try running with --no-check option");
+            }
+        }else{
+            warning("To perfom ping check root privilliges required.Add --no-check option to silence this warning or run with root to perform ping check");
         }
     }
 #ifdef DEBUG

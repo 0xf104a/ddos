@@ -11,6 +11,9 @@
 
 #include <stdio.h>
 #include <math.h>
+#include <unistd.h>
+#include <sys/types.h>
+
 int randport()
 {
     return rand() % 65534 + 1;
@@ -166,5 +169,13 @@ const char* sgetlarg(const char *arg, const char* argv[], int argc,const char* _
         return getlarg(arg, argv, argc);
     }else{
         return _default;
+    }
+}
+bool is_root(void){
+    if(geteuid() != 0)
+    {
+        return false;
+    }else{
+        return true;
     }
 }
