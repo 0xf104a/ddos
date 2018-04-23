@@ -98,7 +98,7 @@ int main(int argc, const char* argv[])
         packet = randstring(PACKET_SIZE);
     } else {
         packet = (char*)malloc(sizeof(char) * 35);
-        packet = "HTTP/1.1 GET /\r\nConnection:keep-alive\r\n";
+        packet = "HTTP/1.1 GET /\r\nConnection:keep-alive\r\n\r\n";
     }
     if (THREAD_COUNT <= 0) {
         error("Bad thread count!");
@@ -132,8 +132,12 @@ int main(int argc, const char* argv[])
     bool check = !checklarg("--no-check", argv, argc);
     socket_wait = !checklarg("--no-wait", argv, argc);
     //Checking whether host online
-    if (check) {//TODO:For next verison make normal check
-        ping(host, 5, 32);
+    if (check) {
+        int PING_MAX_TRIES=atoi(sgetlarg("--ping-max-tries", argv, argc, "5"));
+        int PING_TIMEOUT=atoi(sgetlarg("--ping-timeout", argv, argc, "2"));
+        if(!ping(host,PING_MAX_TRIES,PING_TIMEOUT)){
+            die("Host is down.If it just blocking ping packets try running with --no-check option");
+        }
     }
 #ifdef DEBUG
     info("Configuration:");

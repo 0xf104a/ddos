@@ -36,4 +36,7 @@ char* bytes2mb(int64_t bcount);
 char* bytes2any(int64_t bcount,uint8_t type);
 char* metrics2str(uint8_t type);
 uint8_t str2metrics(char* metrics);
+const char* sgetlarg(const char *arg, const char* argv[], int argc,const char* _default);
+const char* sgetarg(const char arg[2], const char* argv[], int argc,const char* _default);
+
 #endif /* util_h */

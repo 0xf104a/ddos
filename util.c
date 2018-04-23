@@ -152,3 +152,19 @@ uint8_t str2metrics(char* metrics){
         return -1;
     }
 }
+
+const char* sgetarg(const char arg[2], const char* argv[], int argc,const char* _default){
+    if(checkarg(arg, argv, argc)){
+        return getarg(arg, argv, argc);
+    }else{
+        return _default;
+    }
+}
+
+const char* sgetlarg(const char *arg, const char* argv[], int argc,const char* _default){
+    if(checklarg(arg, argv, argc)){
+        return getlarg(arg, argv, argc);
+    }else{
+        return _default;
+    }
+}

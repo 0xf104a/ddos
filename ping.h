@@ -14,6 +14,7 @@
 #include <stdint.h>
 #include <sys/types.h>
 
-bool ping(char* _host,uint32_t trycount,int32_t _psize);
+
+bool ping(char *_host,uint32_t max,int _timeout);
 
 #endif /* ping_h */
