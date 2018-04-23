@@ -9,5 +9,11 @@
 #ifndef ping_h
 #define ping_h
 
+#include <stddef.h>
+#include <stdbool.h>
+#include <stdint.h>
+#include <sys/types.h>
+
+bool ping(char* _host,uint32_t trycount,int32_t _psize);
 
 #endif /* ping_h */

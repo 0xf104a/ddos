@@ -18,6 +18,7 @@
 #include "ddos.h"
 #include "message.h"
 #include "socket.h"
+#include "ping.h"
 
 bool socket_wait;
 
@@ -131,31 +132,8 @@ int main(int argc, const char* argv[])
     bool check = !checklarg("--no-check", argv, argc);
     socket_wait = !checklarg("--no-wait", argv, argc);
     //Checking whether host online
-    if (check&&PROTOCOL==MODE_TCP) {//TODO:For next verison make normal check
-        info("Checking service");
-        int sc = dos_tcp_sock(host, port);
-        if (sc < 0) {
-            error("Failed to establish connection.Exiting.");
-            return -1;
-        }
-        success("Service online");
-        shutdown(sc, 2);
-    }else if(check){
-        info("Checking service");
-        int sc = dos_udp_sock();
-        if (sc < 0) {
-            error("Failed to create socket.Exiting.");
-            return -1;
-        }
-        char buf[32];
-        bzero(buf, 32);
-        dos_udp_send(sc, host, port, "echo", buf, 32);
-        if(buf[0]!=0){
-            success("Service online");
-        }else{
-            die("Service offline");
-        }
-        
+    if (check) {//TODO:For next verison make normal check
+        ping(host, 5, 32);
     }
 #ifdef DEBUG
     info("Configuration:");

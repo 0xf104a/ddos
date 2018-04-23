@@ -21,6 +21,7 @@
 
 #define MODE_TCP 1
 #define MODE_UDP 2
+#define MODE_ICMP 3
 
 extern double psent;
 extern uint8_t metrics;
