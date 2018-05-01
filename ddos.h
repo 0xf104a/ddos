@@ -19,9 +19,12 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
+#define MODE_EMPTY 0 //not initiallized mode
 #define MODE_TCP 1
 #define MODE_UDP 2
-#define MODE_ICMP 3
+#define MODE_ICMP 3 //For future releases
+#define MODE_SYNFLOOD 4
+#define MODE_MEMCRASHED 5
 
 extern double psent;
 extern uint8_t metrics;

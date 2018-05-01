@@ -14,14 +14,30 @@
 #include <unistd.h>
 #include <sys/types.h>
 
+static uint32_t Q[4096], c = 362436;
+
+void init_rand(uint32_t x)//cwmc
+{
+    int i;
+    Q[0] = x;
+    Q[1] = x + PHI;
+    Q[2] = x + PHI + PHI;
+    for (i = 3; i < 4096; i++)
+    {
+        Q[i] = Q[i - 3] ^ Q[i - 2] ^ PHI ^ i;
+    }
+}
+
 int randport()
 {
     return rand() % 65534 + 1;
 }
+
 char randchar()
 {
     return rand() % 126 + 1;
 }
+
 char* randstring(size_t sz)
 {
     char* s = (char*)malloc(sz * sizeof(char));
@@ -30,11 +46,29 @@ char* randstring(size_t sz)
     }
     return s;
 }
+
 int randrange(int start, int end)
 {
     assert(start < end);
     return rand() % (start + 1 - end) + start;
 }
+
+uint32_t rand_cmwc(void)
+{
+    uint64_t t, a = 18782LL;
+    static uint32_t i = 4095;
+    uint32_t x, r = 0xfffffffe;
+    i = (i + 1) & 4095;
+    t = a * Q[i] + c;
+    c = (t >> 32);
+    x = (uint32_t)t + c;
+    if (x < c) {
+        x++;
+        c++;
+    }
+    return (Q[i] = r - x);
+}
+
 const char* getarg(const char arg[2], const char* argv[], int argc)
 {
 
@@ -171,6 +205,7 @@ const char* sgetlarg(const char *arg, const char* argv[], int argc,const char* _
         return _default;
     }
 }
+
 bool is_root(void){
     if(geteuid() != 0)
     {
@@ -178,4 +213,45 @@ bool is_root(void){
     }else{
         return true;
     }
+}
+/*Cycled string list implementation*/
+slist* create_slist(){
+    slist* _new=(slist*)malloc(sizeof(slist));
+    _new->first=NULL;
+    _new->last=NULL;
+    _new->length=0;
+    return _new;
+}
+
+void add_slist(slist* this,char* x){
+    _node* _new=(_node*)malloc(sizeof(_node)/*+strlen(x)*sizeof(char)*/);
+    _new->next=this->first;
+    _new->val=x;
+    if(!this->first){
+        this->first=_new;
+        this->last=_new;
+    }else{
+        this->last->next=_new;
+        this->last=_new;
+    }
+}
+
+void free_slist(slist *this){//frees all list
+    _node *cur=this->first;
+    _node *_first=this->first;
+    while(cur->next!=_first){
+        _node* _cur=cur->next;
+        free(cur);
+        cur=_cur;
+    }
+    free(cur);
+    free(this);
+}
+
+_node* nth_slist(slist* this,uint64_t n){
+    _node* cur=this->first;
+    for(int i=0;i<n;i++){
+        cur=cur->next;
+    }
+    return cur;
 }

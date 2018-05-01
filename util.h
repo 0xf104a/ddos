@@ -20,6 +20,19 @@
 #define SIZE_MB 2
 #define SIZE_GB 3
 #define SIZE_TB 4
+//For rand_cwmc
+#define PHI 0x9e3779b9
+
+typedef struct _slist_node{ /*node*/
+    struct _slist_node *next;
+    char* val;
+}_node;
+
+typedef struct _list{ /*header*/
+    uint64_t length;
+    _node* first;
+    _node* last;
+} slist;
 
 int randport(void);
 char randchar(void);
@@ -39,5 +52,11 @@ uint8_t str2metrics(char* metrics);
 const char* sgetlarg(const char *arg, const char* argv[], int argc,const char* _default);
 const char* sgetarg(const char arg[2], const char* argv[], int argc,const char* _default);
 bool is_root(void);
+slist* create_slist(void);
+void add_slist(slist* this,char* x);
+void free_slist(slist *this);
+_node* nth_slist(slist* this,uint64_t n);
+void init_rand(uint32_t x);
+uint32_t rand_cmwc(void);
 
 #endif /* util_h */
