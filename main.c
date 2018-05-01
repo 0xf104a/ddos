@@ -37,7 +37,6 @@ int main(int argc, const char* argv[])
         printf("                                             v1.2-early-prealpha\n");
     }
     info("DDOSer v1.2 by Andrewerr(https://github.com/Andrewerr)");
-    info("This version is especially licensed and developed for UCF(Ukrainian Cyber Forces)");
 #ifdef DEBUG
     info("Starting in DEBUG mode");
 #endif
