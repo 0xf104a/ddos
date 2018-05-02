@@ -49,7 +49,7 @@ char* randstring(size_t sz)
 
 int randrange(int start, int end)
 {
-    assert(start < end);
+    assert(start <= end);
     return rand() % (start + 1 - end) + start;
 }
 
@@ -224,16 +224,20 @@ slist* create_slist(){
 }
 
 void add_slist(slist* this,char* x){
-    _node* _new=(_node*)malloc(sizeof(_node)/*+strlen(x)*sizeof(char)*/);
+    _node* _new=(_node*)malloc(sizeof(_node));
     _new->next=this->first;
-    _new->val=x;
-    if(!this->first){
+    _new->val=(char*)malloc(strlen(x)*sizeof(char));
+    strcpy(_new->val, x);
+    if(this->length==0){
+        _new->next=_new;
         this->first=_new;
         this->last=_new;
     }else{
+        assert(this->last!=NULL);
         this->last->next=_new;
         this->last=_new;
     }
+    this->length++;
 }
 
 void free_slist(slist *this){//frees all list

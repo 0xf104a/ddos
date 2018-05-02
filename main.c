@@ -19,6 +19,7 @@
 #include "message.h"
 #include "socket.h"
 #include "ping.h"
+#include "memcrashed.h"
 
 bool socket_wait;
 
@@ -105,7 +106,7 @@ int main(int argc, const char* argv[])
         return -1;
     }
 
-    int PROTOCOL = MODE_TCP;
+    int PROTOCOL = MODE_EMPTY;
     if (checkarg("-u", argv, argc)) {
         PROTOCOL = MODE_UDP;
     }
@@ -131,6 +132,21 @@ int main(int argc, const char* argv[])
     hide_warnings = checklarg("--no-warnings", argv, argc);
     bool check = !checklarg("--no-check", argv, argc);
     socket_wait = !checklarg("--no-wait", argv, argc);
+    /*memcrashed argument checker*/
+    if(checklarg("--memcrashed", argv, argc)){
+        const char * hostfile=sgetlarg("--ipfile", argv, argc, "ipfile");
+        memcrashed_init(hostfile);
+        if(PROTOCOL!=MODE_EMPTY){
+            die("You have set incompitiable attack modes");
+        }
+        PROTOCOL=MODE_MEMCRASHED;
+        if(!is_root()){
+            die("Root privillegies required to perform attack");
+        }
+        if(USE_HTTP||socket_wait){
+            warning("Some options you set is incompitiable with memcrashed attack PoC");
+        }
+    }
     //Checking whether host online
     if (check) {
         if(is_root()){
@@ -142,6 +158,12 @@ int main(int argc, const char* argv[])
         }else{
             warning("To perfom ping check root privilliges required.Add --no-check option to silence this warning or run with root to perform ping check");
         }
+    }
+    if(PROTOCOL==MODE_EMPTY){
+#ifdef DEBUG
+        info("Automatically set mode to TCP");
+#endif
+        PROTOCOL=MODE_TCP;
     }
 #ifdef DEBUG
     info("Configuration:");
