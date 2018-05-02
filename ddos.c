@@ -8,6 +8,7 @@
 
 #include "ddos.h"
 #include "util.h"
+#include "memcrashed.h"
 
 #include <math.h>//pow
 
@@ -25,8 +26,8 @@ pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 bool status;
 uint8_t metrics;
 double psize;//one packet size in selected metrics
-
 bool __run;//still running?
+
 uint64_t pc;//Now it used for speed counting
 bool use_dos_sleep;
 int dos_sleep;
@@ -85,6 +86,8 @@ void _ddos_tcp(char* host, int port, char* packet)
         if (!__run) {
             shutdown(sock, 2);
             free(buf);
+            free(packet);
+            free(host);
             break;
         }
         assert(sock >= 0);
@@ -127,6 +130,8 @@ void _ddos_udp(char* host, int port, char* packet)
         if (!__run) {
             shutdown(sock, 2);
             free(buf);
+            free(packet);
+            free(host);
             break;
         }
         if (RAND_PACKET) {

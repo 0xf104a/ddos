@@ -35,6 +35,7 @@ extern int __port;
 extern pthread_mutex_t mutex;
 extern bool use_dos_sleep;
 extern int dos_sleep;
+extern bool __run;
 
 typedef struct {
     char* packet;
