@@ -144,7 +144,6 @@ void memcrashed_init(const char* hostfile){
     size_t len = 0;
     ssize_t read;
     while ((read = getline(&line, &len, fp)) != -1) {
-        info("Adding ip:%s",line);
         add_slist(_hosts, line);
     }
     if(line){
