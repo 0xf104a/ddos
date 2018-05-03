@@ -13,7 +13,7 @@ Example:<br>
 ## Automatic formatting
 prepare.py could format your file automtically.It'll delete all lines that are not supported<br>
 Usage:<br>
-```./prepare.py <ipfile>```
+```./prepare.py <ipfile>```<br>
 Example:<br>
 ```
 $ ./prepare.py ipfile
