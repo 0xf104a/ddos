@@ -1,6 +1,7 @@
 # ddos
 <b>ddos</b>--simple program to test ddos protection system</br>
 <b>THIS PROGRAM PROVIDED FOR ONLY EDUCATIONAL PURPOSES</b><br>
+<b>NOTICE:current repository version compiles only on Mac Os X.See realeses section if you have Linux/Android</b>
 ## Compilation
 ```$ ./build.sh release ```
 <br>
