@@ -10,17 +10,17 @@
 #error Not compitable with Windows platform
 #endif
 
-#define DEBUG
 
 #include <stdbool.h>
 #include <time.h>
+#include <stdint.h>
 
 #include "ddos.h"
 #include "message.h"
 #include "socket.h"
 #include "ping.h"
 #include "memcrashed.h"
-#include "types.h"
+
 
 bool socket_wait;
 

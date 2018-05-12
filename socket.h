@@ -19,8 +19,7 @@
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <sys/time.h>
-
-#include "types.h"
+#include <stdint.h>
 
 extern bool socket_wait;
 

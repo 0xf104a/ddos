@@ -16,7 +16,7 @@
 #include <time.h>
 #include <stdint.h>
 
-#include "types.h"
+#include <stdint.h>
 
 #define SIZE_BYTES 0
 #define SIZE_KB 1

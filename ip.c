@@ -7,3 +7,9 @@
 //
 
 #include "ip.h"
+
+#include <stdint.h>
+
+ipheader* make_iphdr(uint8_t ttl){
+    return NULL;
+}

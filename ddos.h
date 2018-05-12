@@ -12,12 +12,12 @@
 #include "message.h"
 #include "socket.h"
 #include "util.h"
-#include "types.h"
 
 #include <assert.h>
 #include <pthread.h>
 #include <signal.h>
 #include <stdbool.h>
+#include <stdint.h>
 #include <stdlib.h>
 
 #define MODE_EMPTY 0 //not initiallized mode

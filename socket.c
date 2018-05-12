@@ -158,7 +158,7 @@ bool dos_udp_send(int sock, char* host, int port, char* message, char* buf, size
 #endif
     return true;
 }
-int dos_raw_sock(int _proto){
+int dos_raw_sock(int _proto,bool is_headers_raw){
     if(!is_root()){
         die("Root privilliges required to perform this type of attack");
     }
@@ -166,6 +166,14 @@ int dos_raw_sock(int _proto){
     if(sd<0){
         dperror("Failed to open raw socket");
     }
-    //if(setsockopt(<#int#>, <#int#>, <#int#>, <#const void *#>, <#socklen_t#>))
+    if(is_headers_raw){
+        int x;
+        const int *ptr=&x;
+        if (setsockopt (sd, IPPROTO_IP, IP_HDRINCL, ptr, sizeof (int)) < 0)
+        {
+            dperror("setsockopt()");
+            exit(0);
+        }
+    }
     return sd;
 }

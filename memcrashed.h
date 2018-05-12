@@ -15,4 +15,5 @@ void memcrashed_status(void);
 void memcrashed_ddos(_dos_param* _p);
 void memcrashed_init(const char* hostfile);
 
+
 #endif /* memcrashed_h */

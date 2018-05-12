@@ -14,7 +14,6 @@
 #include <stdint.h>
 #include <sys/types.h>
 
-#include "types.h"
 
 bool ping(char *_host,uint32_t max,int _timeout);
 

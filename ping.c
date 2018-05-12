@@ -17,8 +17,9 @@
 //Code of this module is based on https://github.com/hayderimran7/advanced-socket-programming/blob/master/ping.c
 #ifdef __ANDROID__
 #warning Non-rooted android devices does not support ping module
-#define errno_t int
 #endif
+
+#define errno_t int
 
 #define DEBUG
 
