@@ -54,4 +54,5 @@ void error(const char* format, ...);
 void success(const char* format, ...);
 void success_n(const char* format, ...);
 void die(const char* format, ...);
+void dperror(const char* format,...);
 #endif /* message_h */

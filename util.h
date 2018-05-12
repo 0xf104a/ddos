@@ -14,6 +14,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <stdint.h>
+
+#include "types.h"
 
 #define SIZE_BYTES 0
 #define SIZE_KB 1

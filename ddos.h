@@ -12,6 +12,7 @@
 #include "message.h"
 #include "socket.h"
 #include "util.h"
+#include "types.h"
 
 #include <assert.h>
 #include <pthread.h>

@@ -7,6 +7,7 @@
 //
 
 #include "socket.h"
+#include "util.h"
 
 int hostname2ip(const char* hostname, char* ip)
 {
@@ -156,4 +157,15 @@ bool dos_udp_send(int sock, char* host, int port, char* message, char* buf, size
     info("returning recieved buffer");
 #endif
     return true;
+}
+int dos_raw_sock(int _proto){
+    if(!is_root()){
+        die("Root privilliges required to perform this type of attack");
+    }
+    int sd=socket(PF_INET, SOCK_RAW, _proto);
+    if(sd<0){
+        dperror("Failed to open raw socket");
+    }
+    //if(setsockopt(<#int#>, <#int#>, <#int#>, <#const void *#>, <#socklen_t#>))
+    return sd;
 }

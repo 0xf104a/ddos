@@ -259,3 +259,10 @@ _node* nth_slist(slist* this,uint64_t n){
     }
     return cur;
 }
+/*End cyclic list implementations*/
+
+void assert_root(void){
+    if(!is_root()){
+        die("Root privlligies requeired to run this type of attack");
+    }
+}

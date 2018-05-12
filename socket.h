@@ -20,6 +20,8 @@
 #include <sys/types.h>
 #include <sys/time.h>
 
+#include "types.h"
+
 extern bool socket_wait;
 
 int dos_tcp_sock(char* host, int port);

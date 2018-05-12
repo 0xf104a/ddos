@@ -10,7 +10,7 @@ def main():
     if len(sys.argv)<2:
         print("\033[94m[*]:\033[0mUsage:%s <ipfile>"%sys.argv[0])
         sys.exit(-1)
-    pattern=re.compile('^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$')
+pattern=re.compile('^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$')#ip regex
     ips=[]
     with open(sys.argv[1],"r") as f:
         for line in f:
@@ -30,6 +30,9 @@ def main():
 
 if __name__=='__main__':
     start_time = time.time()
-    main()
+    try:
+        main()
+    except Exception as e:
+        print("\033[91m[-]:\033[0mError while executing:%s"%unsupported_cnt)
     elapsed_time = time.time() - start_time
     print("\033[92m[+]:\033[0mDone in %.2fs"%elapsed_time)

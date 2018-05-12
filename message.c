@@ -9,6 +9,8 @@
 #include "message.h"
 #include "ddos.h"
 
+#include <errno.h>
+
 bool hide_warnings;
 bool hide_errors;
 void info(const char* format, ...)
@@ -41,4 +43,8 @@ void die(const char* format, ...)
     error("Fatal error");
     error("Quiting...");
     exit(-1);
+}
+void dperror(const char* format,...){
+    PRINT_FORMATTED_NO_NEWLINE(ERROR)
+    error(":%s(%d)",strerror(errno),errno);
 }
