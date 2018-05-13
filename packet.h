@@ -23,4 +23,12 @@ typedef struct ipheader {
     unsigned int       iph_destip;
 } ipheader;
 
+typedef struct udpheader {
+    unsigned short int udph_srcport;
+    unsigned short int udph_destport;
+    unsigned short int udph_len;
+    unsigned short int udph_chksum;
+} udpheader;
+
+
 #endif /* ip_h */
