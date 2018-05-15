@@ -2,7 +2,8 @@
 <b>ddos</b>--simple program to test ddos protection system</br>
 <b>THIS PROGRAM PROVIDED FOR ONLY EDUCATIONAL PURPOSES</b><br>
 ## Compilation
-```$ ./build.sh release ```
+```$ ./build.sh release ```<br>
+<b>Notice:</b>Current build is not supported by some compilers.Download latest relase from here: https://github.com/Andrewerr/ddos/releases
 <br>
 ## Usage
 ```$./ddos (HOST) (PORT) [options...] ``` <br>
