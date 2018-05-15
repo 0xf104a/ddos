@@ -9,8 +9,8 @@
 #include "packet.h"
 #include <stdlib.h>
 #include <stdint.h>
-#include <netinet/ip.h>
 #include <string.h>
+#include <netinet/ip.h>
 #include <arpa/inet.h>
 
 static unsigned short csum(unsigned short *buf, register int nwords)
@@ -41,8 +41,34 @@ ipheader* make_iphdr(uint8_t ttl,uint8_t proto,uint32_t src,uint32_t dst,uint16_
 }
 
 ipheader* make_iphcommon(char *src,char* dst,uint8_t proto){
-    return make_iphdr(64, proto, inet_addr(src), inet_addr(dst), 54321, IPTOS_LOWDELAY);
+    return make_iphdr(64, proto, inet_addr(src), inet_addr(dst), 54321, 0xf);
 }
 
-//TODD:udpheader* make_udphdr
+udpheader* make_udphdr(uint8_t srcport,uint8_t dstport,uint8_t len){
+    udpheader* x=(udpheader*)malloc(sizeof(udpheader));
+    memset(x, 0, sizeof(udpheader));
+    x->udph_srcport=srcport;
+    x->udph_destport=dstport;
+    x->udph_srcport=srcport;
+    return x;
+}
+
+udppacket* setup_udppacket(char* src,char* dst,uint8_t srcport,uint8_t dstport,char* payload){
+    udppacket* x=(udppacket*)malloc(sizeof(udppacket));
+    x->ip=make_iphcommon(src, dst, IPPROTO_UDP);
+    x->udp=make_udphdr(srcport, dstport, htons(sizeof(udpheader)+strlen(payload)*sizeof(char)));
+    x->payload=(char*)malloc(strlen(payload)*sizeof(char));
+    strcpy(x->payload, payload);
+    x->payload_size=strlen(payload)*sizeof(char);
+    x->__sz=sizeof(ipheader)+sizeof(udpheader)+x->payload_size;
+    return x;
+}
+char* udppacket_pack(udppacket* packet){
+    char* buffer=(char*)malloc(packet->__sz);
+    
+    return buffer;
+}
+
+
+
 
