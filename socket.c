@@ -8,6 +8,7 @@
 
 #include "socket.h"
 #include "util.h"
+#include "packet.h"
 
 int hostname2ip(const char* hostname, char* ip)
 {
@@ -31,6 +32,13 @@ int hostname2ip(const char* hostname, char* ip)
 
     return 1;
 }
+
+struct in_addr make_inaddr(char* host){
+    struct in_addr x;
+    x.s_addr=inet_addr(host);
+    return x;
+}
+
 int dos_tcp_sock(char* host, int port)
 {
     int sock;
@@ -169,6 +177,9 @@ int dos_raw_sock(int _proto,bool is_headers_raw){
     if(is_headers_raw){
         int x;
         const int *ptr=&x;
+#ifdef __APPLE__
+        warning("Programming warning:IP_HDRINCL currently not supported on OS X");
+#endif
         if (setsockopt (sd, IPPROTO_IP, IP_HDRINCL, ptr, sizeof (int)) < 0)
         {
             dperror("setsockopt()");
@@ -176,4 +187,15 @@ int dos_raw_sock(int _proto,bool is_headers_raw){
         }
     }
     return sd;
+}
+ssize_t dos_raw_send(int sock,void* __data,uint16_t port,char* target,size_t len){
+    in_addr_t _ip=inet_addr("localhost");
+    struct sockaddr_in t;
+    t.sin_family=AF_INET;
+    t.sin_addr.s_addr=_ip;
+    ssize_t x=sendto(sock, (char*)__data, len, 0, (struct sockaddr *) &t, sizeof(t));
+    if(x<0){
+        dperror("Failed to send data");
+    }
+    return x;
 }

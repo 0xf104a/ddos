@@ -20,6 +20,7 @@
 #include "socket.h"
 #include "ping.h"
 #include "memcrashed.h"
+#include "packet.h"
 
 
 bool socket_wait;

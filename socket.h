@@ -10,6 +10,8 @@
 #define socket_h
 
 #include "message.h"
+#include "packet.h"
+
 #include <arpa/inet.h>
 #include <errno.h> //For errno - the error number
 #include <netdb.h>
@@ -29,5 +31,7 @@ bool dos_tcp_send_noalloc(int sock, char* data, char* buf, size_t bufsize);
 char* dos_tcp_send(int sock, char* data);
 int dos_udp_sock(void);
 bool dos_udp_send(int sock, char* host, int port, char* message, char* buf, size_t bufsize);
+ssize_t dos_raw_send(int sock,void* __data,uint16_t port,char* target,size_t len);
+int dos_raw_sock(int _proto,bool is_headers_raw);
 int hostname2ip(const char* hostname, char* ip);
 #endif /* socket_h */

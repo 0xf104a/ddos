@@ -6,10 +6,13 @@
 //  Copyright © 2018 Andre Zay. All rights reserved.
 //
 
-#ifndef ip_h
-#define ip_h
+#ifndef packet_h
+#define packet_h
 
 #include <stddef.h>
+#include <stdint.h>
+#include <stdbool.h>
+
 
 typedef struct _ipheader {
     unsigned char      iph_ihl:5, iph_ver:4;
@@ -40,5 +43,9 @@ typedef struct _udppacket{
     size_t     __sz;//Full packet size
 }udppacket;
 
-
-#endif /* ip_h */
+udppacket* setup_udppacket(char* src,char* dst,uint16_t srcport,uint16_t dstport,char* payload);
+udpheader* make_udphdr(uint16_t srcport,uint16_t dstport,uint16_t len);
+ipheader* make_iphdr(uint8_t ttl,uint8_t proto,uint32_t src,uint32_t dst,uint16_t id,uint8_t tos,uint16_t len);
+ipheader* make_iphcommon(char *src,char* dst,uint8_t proto,uint16_t len);
+char* udppacket_pack(udppacket* packet);
+#endif /* packet_h */

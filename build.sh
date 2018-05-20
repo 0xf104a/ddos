@@ -52,13 +52,13 @@ fi
 if [ $1 = "debug" ]
   then
    echo "Building debug"
-   gcc memcrashed.c ping.c util.c message.c socket.c ddos.c main.c -v -lm -lpthread -o ddos
+   gcc packet.c memcrashed.c ping.c util.c message.c socket.c ddos.c main.c -v -lm -lpthread -o ddos
    exit
 fi
 if [ $1 = "release" ]
   then
    echo "Building release"
-   gcc ping.c util.c message.c socket.c ddos.c main.c -lm -Ofast -Os -lpthread -o ddos
+   gcc packet.c ping.c util.c message.c socket.c ddos.c main.c -lm -Ofast -Os -lpthread -o ddos
    exit
 fi
 if [ $1 = "update" ]
