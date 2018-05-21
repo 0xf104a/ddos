@@ -26,6 +26,7 @@
 #define MODE_ICMP 3 //For future releases
 #define MODE_SYNFLOOD 4
 #define MODE_MEMCRASHED 5
+#define MODE_UDPV2 6
 
 extern double psent;
 extern uint8_t metrics;
