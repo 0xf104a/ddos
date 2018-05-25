@@ -34,5 +34,6 @@ if __name__=='__main__':
         main()
     except Exception as e:
         print("\033[91m[-]:\033[0mError while executing:%s"%unsupported_cnt)
+        sys.exit(-1)
     elapsed_time = time.time() - start_time
     print("\033[92m[+]:\033[0mDone in %.2fs"%elapsed_time)
