@@ -1,3 +1,8 @@
+## THIS REPOSITORY IS NO MORE SUPPORTED ON GitHub
+# Why?
+I am stopping my work on github due it's acquirment by Microsoft.
+# Where it'll be supported
+I haven't decided platform to migrate yet.I'll write about it later.
 # ddos
 <b>ddos</b>--simple program to test ddos protection system</br>
 <b>THIS PROGRAM PROVIDED FOR ONLY EDUCATIONAL PURPOSES</b><br>
