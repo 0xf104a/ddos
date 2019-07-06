@@ -14,6 +14,7 @@
 #include <stdlib.h>
 #include <errno.h>
 #include <string.h>
+#include <strings.h>
 //Code of this module is based on https://github.com/hayderimran7/advanced-socket-programming/blob/master/ping.c
 #ifdef __ANDROID__
 #warning Non-rooted android devices does not support ping module

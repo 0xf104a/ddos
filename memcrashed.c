@@ -22,9 +22,8 @@
 #ifdef __APPLE__
 #define iphdr ip
 #define MEMCRASHED_INCLUDED
+#warning Memcrahsed may not work on latest versions of OS X due to raw socket limitations.
 #endif
-
-#define DEBUG
 
 #define MAX_PSIZE 4096
 slist* _hosts;

