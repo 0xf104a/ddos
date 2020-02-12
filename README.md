@@ -1,6 +1,8 @@
 # ddos
 <b>ddos</b>--simple program to test ddos protection system</br>
 <b>THIS PROGRAM PROVIDED FOR ONLY EDUCATIONAL PURPOSES</b><br>
+## Support
+The support of this program is currently stopped. The development of completely new toolkit is started at https://github.com/Andrewerr/ddos2
 ## Compilation
 ```$ ./build.sh release ```<br>
 <b>Notice:</b>Current build is not supported by some compilers.Download latest relase from here: https://github.com/Andrewerr/ddos/releases
